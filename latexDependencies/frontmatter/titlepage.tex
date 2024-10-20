@@ -1,0 +1,100 @@
+\normalsize
+
+\newcommand{\printTask}{%
+    \ifthenelse{\equal{\task}{lab}}{%
+        лабораторной%
+    }{%
+        \ifthenelse{\equal{\task}{hw}}{%
+            домашней%
+        }{%
+            Неизвестный тип задания%
+        }%
+    }%
+}
+
+\begin{titlepage}
+
+    \begin{center}
+        {\footnotesize \itshape Федеральное государственное бюджетное 
+                       образовательное учреждение высшего образования}
+    \end{center}
+
+    \begin{minipage}[c]{0.1\textwidth}
+        \includegraphics[width=1.1\textwidth]{iconBMSTU}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[c]{0.9\textwidth}
+        \centering
+        \itshape
+        \bfseries
+        \small
+        \guillemotleft Московский государственный технический университет \\
+        имени Н.Э. Баумана\guillemotright \\
+        (национальный исследовательский университет) \\
+        (МГТУ им. Н.Э. Баумана) 
+    \end{minipage}
+
+    \vspace{0.5cm}
+    \noindent\rule{\textwidth}{2pt} \\
+
+    \noindent\uline{\textbf{ФАКУЛЬТЕТ} ФУНДАМЕНТАЛЬНЫЕ НАУКИ} \\
+    \vspace{-5pt} \\
+    \noindent\uline{\textbf{КАФЕДРА} ВЫЧИСЛИТЕЛЬНАЯ МАТЕМАТИКА И МАТЕМАТИЧЕСКАЯ} \\
+    \vspace{-5pt} \\
+    \noindent\uline{ФИЗИКА (ФН11)} \\
+    \vspace{-5pt} \\
+    \noindent\uline{\textbf{НАПРАВЛЕНИЕ ПОДГОТОВКИ} МАТЕМАТИКА И КОМПЬЮТЕРНЫЕ} \\
+    \vspace{-5pt} \\
+    \noindent\uline{НАУКИ (02.03.01)} \\
+
+    \begin{center}
+        \bfseries
+        \textsc{О т ч е т} \\[10pt]
+        по \printTask {} работе \textnumero {} \taskNumber
+    \end{center}
+
+    \vspace{10pt}
+
+    \hspace{10pt} 
+    \noindent \textbf{Название \printTask {} работы:} \par
+    \vspace{5pt}
+    \hspace{10pt} 
+    \noindent \textbf{\uline{\taskName}}
+
+    \vspace{10pt}
+
+    \begin{center}
+        \bfseries
+        Вариант \textnumero {} \variant
+    \end{center}
+
+    \vspace{20pt}
+
+    \hspace{10pt} 
+    \noindent \textbf{Дисциплина:} \par
+    \vspace{5pt}
+    \hspace{10pt} 
+    \noindent \subject
+
+    \vspace{10pt}
+
+    \begin{flushright}
+        \renewcommand{\arraystretch}{3}
+        \begin{tabular}{r r r}
+            \multicolumn{1}{l}{Студент группы \uline{\group}} & 
+            $\quad \underset{\text{(Подпись, дата)}}{\underline{\hspace{3cm}}} \quad$ & 
+            \multicolumn{1}{c}{$\underset{\text{(И.О. Фамилия)}}{\uline{\textbf{\studentName}}}$} \\
+
+            \multicolumn{1}{l}{Преподаватель} & 
+            $\quad \underset{\text{(Подпись, дата)}}{\underline{\hspace{3cm}}} \quad$ & 
+            \multicolumn{1}{c}{$\underset{\text{(И.О. Фамилия)}}{\uline{\textbf{\teacherName}}}$} \\
+        \end{tabular}
+    \end{flushright}
+
+    \vfill
+
+    \begin{center}
+        \small
+        Москва, 2024
+    \end{center}
+\end{titlepage}

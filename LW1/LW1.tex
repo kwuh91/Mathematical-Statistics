@@ -1,0 +1,67 @@
+\documentclass[a4paper, 14pt]{extarticle}
+
+\usepackage{../latexDependencies/misc/preamble}
+
+\geometry{a4paper}
+
+% Название дисциплины
+\newcommand{\subject}{Теория вероятности и математическая статистика} 
+
+% Тип работы
+% lab - для лабораторной работы 
+% hw  - для домашней     работы
+\newcommand{\task}{lab} 
+
+% Номер работы
+\newcommand{\taskNumber}{1} 
+
+% Название работы
+\newcommand{\taskName}{Первоначальная обработка статистических данных} 
+
+% Имя студента
+\newcommand{\studentName}{Очкин Н.В.}
+
+% Имя преподававателя
+\newcommand{\teacherName}{Облакова Т.В.}
+
+% Группа
+\newcommand{\group}{ФН11-52Б}
+
+% Вариант
+\newcommand{\variant}{9}
+
+\begin{document}
+
+\graphicspath{ {../latexDependencies/images} } 
+\input{../latexDependencies/frontmatter/titlepage}
+
+% Reset the font size and page margins
+\newgeometry{left=25mm, right=25mm, top=20mm, bottom=20mm}
+\fontsize{14pt}{16pt}\selectfont
+
+\graphicspath{ {../latexDependencies/images/LW1} }
+
+% --------------------------------------START--------------------------------------
+
+\linespread{1.5}
+
+\section*{Задание}
+
+По данной выборе
+
+\begin{enumerate}
+    \item Найдите крайние члены вариационного ряда и размах выборки
+    \item Осуществите группировку данных (количество интервалов 
+    находим по правилу Стерджеса) 
+    \item По сгруппированным данным постройте гистограмму 
+    относительных частот
+    \item Вычислите выборочное среднее и выборочную дисперсию.
+    \item По виду гистограммы определите возможный закон распределения, 
+    оцените параметры этого закона по методу моментов, постройте совмещенные 
+    графики гистограммы и плотности предполагаемого закона
+    \item Найдите эмпирическую функцию распределения и постройте совмещенные 
+    графики эмпирической и теоретической функций распределения
+\end{enumerate}
+
+
+\end{document}
