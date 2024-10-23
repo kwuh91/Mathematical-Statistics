@@ -56,6 +56,8 @@
 \setstretch{1}
 \linespread{1.1}
 
+\setlength{\parindent}{0pt}
+
 % --------------------------------------START--------------------------------------
 
 \fontsize{12pt}{16pt}\selectfont
@@ -154,6 +156,550 @@
 
 \subsection{Найдите крайние члены вариационного ряда и размах выборки}
 
+Обратимся к листингу \ref{lst:3} и найдем крание члены вариационного ряда 
+как минимальное и максимальное значения набора данных, а также размах выборки, 
+как их разницу.
+\begin{align*}
+    & \text{Крайние члены: }  2.375, \hspace{5pt} 17.985 \\
+    & \text{Размах выборки: }  15.61
+\end{align*}
+
+\subsection{Осуществите группировку данных}
+
+Для начала определим количество интервалов, воспользовавшись правилом
+Стерджеса:
+\begin{equation*}
+    n = 1 + \lfloor \log_2 N \rfloor,
+\end{equation*}
+где $N$ — общее число наблюдений величины, \\ 
+$\log_2$ — логарифм по основанию 2, \\
+$\lfloor x \rfloor$ — обозначает целую часть числа $x$. \\
+
+И определим шаг интервала разделив размах выборки на количество интервалов.
+Все операции представлены в листинге \ref{lst:4}.
+
+\begin{align*}
+    & \text{Количество интервалов: } 7 \\
+    & \text{Шаг интервала: }  2.23
+\end{align*}
+
+Теперь сгруппируем данные. Алгоритм группировки, представленный в листингах 
+\ref{lst:5} и \ref{lst:6}, опишем в виде псевдокода:
+
+\begin{tcolorbox}[colback=gray!10, colframe=gray!50, title=Псевдокод алгоритма группировки данных]
+    \begin{verbatim}
+интервалы = [i для i в диапазоне от 1 до k включительно]
+
+интервалы = []
+частоты = []
+относительныеЧастоты = []
+серединыИнтервалов = []
+
+текущий = минимальныйЭлемент
+пока текущий + шаг <= максимальныйЭлемент:
+    первыйЭлемент = текущий
+    второйЭлемент = текущий + шаг
+
+    интервалы.добавить(первыйЭлемент, второйЭлемент)
+
+    серединаИнтервала = (первыйЭлемент + второйЭлемент) / 2
+    серединыИнтервалов.добавить(серединаИнтервала)
+
+    частота = найтиЧастоту(первыйЭлемент, второйЭлемент, данные)
+    частоты.добавить(частота)
+
+    относительнаяЧастота = частота / общееКоличествоЭлементов
+    относительныеЧастоты.добавить(относительнаяЧастота)
+
+    текущий = текущий + шаг
+
+функция найтиЧастоту(минимальный, максимальный, данные):
+    счетчик = 0
+
+    для элемента в данные:
+        если минимальный <= элемент < максимальный:
+            счетчик += 1
+
+    вернуть счетчик        
+    \end{verbatim}
+\end{tcolorbox}
+
+\newpage
+
+Представим полученную группировку в виде таблицы:
+
+\begin{table}[h!]
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+    \begin{adjustbox}{max width=0.8\textwidth}
+        \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        номер & \multirow{2}{*}{интервал} & середина & \multirow{2}{*}{частота} & относительная \\
+        интервала & & интервала & & частота \\
+        \hline
+        0 & [2.375; 4.605) & 3.490 & 12 & 0.100 \\
+        \hline
+        1 & [4.605; 6.835) & 5.720 & 20 & 0.167 \\
+        \hline
+        2 & [6.835; 9.065) & 7.950 & 18 & 0.150 \\
+        \hline
+        3 & [9.065; 11.295) & 10.180 & 18 & 0.150 \\
+        \hline
+        4 & [11.295; 13.525) & 12.410 & 17 & 0.142 \\
+        \hline
+        5 & [13.525; 15.755) & 14.640 & 20 & 0.167 \\
+        \hline
+        6 & [15.755; 17.985) & 16.870 & 14 & 0.117 \\
+        \hline
+        \end{tabular}
+    \end{adjustbox}
+    \caption{Сгруппированные данные}
+    \label{tab:your_table_label}
+\end{table}
+
+А также найдем границы интервалов (листинг \ref{lst:8}):
+\begin{equation*}
+    [ 2.375 \hspace{10pt}  4.605 \hspace{10pt}  6.835 \hspace{10pt}  9.065 \hspace{10pt} 11.295 \hspace{10pt} 13.525 \hspace{10pt} 15.755 \hspace{10pt} 17.985]
+\end{equation*}
+
+\subsection{По сгруппированным данным постройте гистограмму относительных частот}
+
+Воспользуемся библиотекой \textsc{matplotlib} для построения гистограммы (листинг \ref{lst:9})
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{LW1_15_1}
+\end{center}
+
+\subsection{Вычислите выборочное среднее и выборочную дисперсию}
+
+По следющим формулам определим выборочное среднее и выборочную дисперсию 
+соответственно:
+
+\begin{equation*}
+    \overline{X} = \frac{1}{n} \sum_{k=1}^{n} X_k \hspace{50pt}
+    S^2 = \cfrac{1}{n - 1} \sum_{k=1}^{n} (X_k - \overline{X})^2
+\end{equation*}
+
+\vspace{15pt}
+
+Обратимся к листингу \ref{lst:10} для вычислений:
+
+\vspace{-15pt}
+
+\begin{align*}
+    & \text{Выборочное среднее: } 10.2681 \\
+    & \text{Выборочная дисперсия: }  19.611
+\end{align*}
+
+\subsection{По виду гистограммы определите возможный закон распределения, 
+оцените параметры этого закона по методу моментов, постройте совмещенные 
+графики гистограммы и плотности предполагаемого закона}
+
+Поскольку по виду гистограммы затруднительно дать точный ответ к какому
+закону распределения относится заданная выборка данных, воспользуемся 
+критерием Колмогорова-Смирнова. В качестве гипотез выберем следующие часто 
+встречающиеся законы распределения:
+
+\begin{center}
+    \begin{multicols}{3}
+        \begin{itemize}[itemsep=10pt]
+            \item Нормальный
+            \item Хи-квадрат
+            \item Экспоненциальный
+            \item Гамма
+            \item Пуассоновский
+            \item Равномерный
+            \item t-распределение Стьюдента
+            \item Логнормальный
+            \item Бета
+            \item Распределение Вейбулла
+        \end{itemize}
+    \end{multicols}
+\end{center}
+
+Применять критерий Колмогорова-Смирнова будем при помощи функции \textsc{kstest}
+модуля \textsc{stats} библиотеки \textsc{scipy}, которая на выходе дает 4 
+параметра:
+\begin{enumerate}
+    \item \textsc{statistic} \textbf{(или D)} - это основная статистика теста Колмогорова-Смирнова:
+    \begin{itemize}
+        \item Она представляет собой максимальную разницу между эмпирической 
+        функцией распределения (наблюдаемые данные) и теоретической функцией 
+        распределения.
+        \item Значение лежит в диапазоне от 0 до 1. Чем больше значение, 
+        тем сильнее различие между данными и теоретическим распределением.
+    \end{itemize}
+
+    \item \textsc{pvalue} - это значение p-уровня значимости:
+    \begin{itemize}
+        \item Оно показывает вероятность того, что наблюдаемое различие 
+        между эмпирическим и теоретическим распределениями могло возникнуть 
+        случайно при условии, что нулевая гипотеза (о соответствии распределению) 
+        верна.
+        \item Если \textsc{pvalue} меньше заранее установленного уровня 
+        значимости (в нашем случае, 0.05), то нулевая гипотеза отвергается, 
+        что означает, что данные не соответствуют предполагаемому распределению.
+    \end{itemize}
+
+    \item \textsc{statistic-location} - это точка, в которой наблюдается 
+    максимальная разница между эмпирической и теоретической функциями 
+    распределения:
+    \begin{itemize}
+        \item Это помогает понять, на каком участке распределения данные 
+        сильнее всего отличаются от теоретической модели.
+    \end{itemize}
+
+    \item \textsc{statistic-sign} - это знак отклонения в точке максимальной 
+    разницы:
+    \begin{itemize}
+        \item Может принимать значения 1 или -1.
+        \item Если \textsc{statistic-sign} = -1, это означает, что в точке 
+        максимального отклонения эмпирическая функция распределения 
+        ниже, чем теоретическая.
+        \item Если бы значение было 1, это указывало бы на то, 
+        что эмпирическая функция распределения выше, чем теоретическая 
+        в этой точке.
+    \end{itemize}
+\end{enumerate}
+
+Первоначальный подбор параметров для каждого из закона осуществим при помощи 
+следующей функции: \textsc{scipy.stats.<ЗАКОН>.fit}. Далее вручную методом 
+подгонки, смотря на график, подберем параметр еще лучше.\\
+
+Для каждого проверяемого закона также построим совмещенный график с 
+гистограммой исходных данных.\\
+Код предоставлен в листингах \ref{lst:11} и \ref{lst:12}
+
+\vspace{-10pt}
+
+\newgeometry{left=15mm, right=15mm, top=10mm, bottom=20mm}
+
+\begin{center}
+    \scalebox{0.85}{
+    \begin{minipage}{\textwidth} 
+        \begin{multicols}{2}
+            \begin{gather*}
+                \textbf{Нормальный} \\
+                \begin{aligned}
+                    & \text{Среднее, } \mu: & 10.2681 \\
+                    & \text{Стандратное отклонение, } \sigma: & 4.4284
+                \end{aligned}\\\\\\
+                \text{Результаты теста} \\
+                \text{Колмогорова-Смирнова:} \\
+                \begin{aligned}
+                    & \text{statistic: } \hspace{60pt} & 0.08872 \\
+                    & \text{pvalue: } \hspace{60pt} & 0.28428 \\
+                    & \text{statistic-location: } \hspace{60pt} & 12.767 \\
+                    & \text{statistic-sign: } \hspace{60pt} & -1 \\
+                \end{aligned} \\\\
+                \includegraphics[width=0.4\textwidth]{LW1_22_5}
+            \end{gather*}
+            \vspace{-3pt}
+            \begin{gather*}
+                \textbf{Хи-квадрат} \\
+                \begin{aligned}
+                    & \text{Количество степеней свободы: } & 2 \\
+                    & \text{Сдвиг : } & 2.375 \\
+                    & \text{Параметр масштаба : } & 4.4099
+                \end{aligned}\\\\
+                \text{Результаты теста} \\
+                \text{Колмогорова-Смирнова:} \\
+                \begin{aligned}
+                    & \text{statistic: } \hspace{60pt} & 0.17036 \\
+                    & \text{pvalue: } \hspace{60pt} & 0.00163 \\
+                    & \text{statistic-location: } \hspace{60pt} & 17.985 \\
+                    & \text{statistic-sign: } \hspace{60pt} & 1 \\
+                \end{aligned} \\\\
+                \includegraphics[width=0.4\textwidth]{LW1_22_11}
+            \end{gather*}
+        \end{multicols}
+    \end{minipage}
+    } 
+\end{center}
+
+\begin{center}
+    \scalebox{0.85}{
+    \begin{minipage}{\textwidth} 
+        \begin{multicols}{2}
+            \begin{gather*}
+                \textbf{Экспоненциальный} \\
+                \begin{aligned}
+                    & \text{Сдвиг: } & 2.375 \\
+                    & \text{Параметр масштаба, } \cfrac{1}{\lambda}: & 7.8931
+                \end{aligned}\\\\
+                \text{Результаты теста} \\
+                \text{Колмогорова-Смирнова:} \\
+                \begin{aligned}
+                    & \text{statistic: } \hspace{60pt} & 0.18895 \\
+                    & \text{pvalue: } \hspace{60pt} & 0.00032 \\
+                    & \text{statistic-location: } \hspace{60pt} & 8.206 \\
+                    & \text{statistic-sign: } \hspace{60pt} & -1 \\
+                \end{aligned} \\\\
+                \includegraphics[width=0.4\textwidth]{LW1_22_17}
+            \end{gather*}
+            \vspace{-7pt}
+            \begin{gather*}
+                \textbf{Гамма} \\
+                \begin{aligned}
+                    & \text{Параметр формы: } & 2 \\
+                    & \text{Сдвиг: } & 2.375 \\
+                    & \text{Параметр масштаба: } & 4.4099
+                \end{aligned}\\\\
+                \text{Результаты теста} \\
+                \text{Колмогорова-Смирнова:} \\
+                \begin{aligned}
+                    & \text{statistic: } \hspace{60pt} & 0.13175 \\
+                    & \text{pvalue: } \hspace{60pt} & 0.02818 \\
+                    & \text{statistic-location: } \hspace{60pt} & 17.985 \\
+                    & \text{statistic-sign: } \hspace{60pt} & 1 \\
+                \end{aligned} \\\\
+                \includegraphics[width=0.4\textwidth]{LW1_22_23}
+            \end{gather*}
+        \end{multicols}
+    \end{minipage}
+    } 
+\end{center}
+
+\begin{center}
+    \scalebox{0.85}{
+    \begin{minipage}{\textwidth} 
+        \begin{multicols}{2}
+            \begin{gather*}
+                \textbf{Пуассоновский} \\
+                \begin{aligned}
+                    & \text{Параметр интенсивности: } & 10.2681
+                \end{aligned}\\\\\\
+                \text{Результаты теста} \\
+                \text{Колмогорова-Смирнова:} \\
+                \begin{aligned}
+                    & \text{statistic: } \hspace{60pt} & 0.19049 \\
+                    & \text{pvalue: } \hspace{60pt} & 0.00027 \\
+                    & \text{statistic-location: } \hspace{60pt} & 12.04 \\
+                    & \text{statistic-sign: } \hspace{60pt} & -1 \\
+                \end{aligned} \\\\
+                \includegraphics[width=0.4\textwidth]{LW1_22_29}
+            \end{gather*}
+            \vspace{0pt}
+            \begin{gather*}
+                \textbf{Равномерный} \\
+                \begin{aligned}
+                    & \text{Нижняя граница: } & 2.375 \\
+                    & \text{Размах: } & 15.61 
+                \end{aligned}\\\\
+                \text{Результаты теста} \\
+                \text{Колмогорова-Смирнова:} \\
+                \begin{aligned}
+                    & \text{statistic: } \hspace{60pt} & 0.048 \\
+                    & \text{pvalue: } \hspace{60pt} & 0.93243 \\
+                    & \text{statistic-location: } \hspace{60pt} & 16.195 \\
+                    & \text{statistic-sign: } \hspace{60pt} & 1 \\
+                \end{aligned} \\\\
+                \includegraphics[width=0.4\textwidth]{LW1_22_35}
+            \end{gather*}
+        \end{multicols}
+    \end{minipage}
+    } 
+\end{center}
+
+\begin{center}
+    \scalebox{0.85}{
+    \begin{minipage}{\textwidth} 
+        \begin{multicols}{2}
+            \begin{gather*}
+                \textbf{t-распределение Стьюдента} \\
+                \begin{aligned}
+                    & \text{Кол-во степеней свободы: } & 2 \\
+                    & \text{Сдвиг: } & 10.2681 \\
+                    & \text{Масштаб: } & 4.4099 
+                \end{aligned}\\\\
+                \text{Результаты теста} \\
+                \text{Колмогорова-Смирнова:} \\
+                \begin{aligned}
+                    & \text{statistic: } \hspace{60pt} & 0.11112 \\
+                    & \text{pvalue: } \hspace{60pt} & 0.09562 \\
+                    & \text{statistic-location: } \hspace{60pt} & 17.985 \\
+                    & \text{statistic-sign: } \hspace{60pt} & 1 \\
+                \end{aligned} \\\\
+                \includegraphics[width=0.4\textwidth]{LW1_22_41}
+            \end{gather*}
+            \vspace{0pt}
+            \begin{gather*}
+                \textbf{Логнормальный} \\
+                \begin{aligned}
+                    & \text{Параметр формы: } & 0.515 \\
+                    & \text{Сдвиг: } & 2.375 \\
+                    & \text{Параметр масштаба: } & 9.1469
+                \end{aligned}\\\\
+                \text{Результаты теста} \\
+                \text{Колмогорова-Смирнова:} \\
+                \begin{aligned}
+                    & \text{statistic: } \hspace{60pt} & 0.19857 \\
+                    & \text{pvalue: } \hspace{60pt} & 0.00013 \\
+                    & \text{statistic-location: } \hspace{60pt} & 6.883 \\
+                    & \text{statistic-sign: } \hspace{60pt} & 1 \\
+                \end{aligned} \\\\
+                \includegraphics[width=0.4\textwidth]{LW1_22_47}
+            \end{gather*}
+        \end{multicols}
+    \end{minipage}
+    } 
+\end{center}
+
+\begin{center}
+    \scalebox{0.85}{
+    \begin{minipage}{\textwidth} 
+        \begin{multicols}{2}
+            \begin{gather*}
+                \textbf{Бета} \\
+                \begin{aligned}
+                    & \text{Параметр формы 1: } & 1.2407 \\
+                    & \text{Параметр формы 2: } & 0.9441 \\
+                    & \text{Сдвиг: } & 0.924 \\
+                    & \text{Масштаб: } & 17.0606
+                \end{aligned}\\\\
+                \text{Результаты теста} \\
+                \text{Колмогорова-Смирнова:} \\
+                \begin{aligned}
+                    & \text{statistic: } \hspace{60pt} & 0.0842 \\
+                    & \text{pvalue: } \hspace{60pt} & 0.34331 \\
+                    & \text{statistic-location: } \hspace{60pt} & 9.927 \\
+                    & \text{statistic-sign: } \hspace{60pt} & 1 \\
+                \end{aligned} \\\\
+                \includegraphics[width=0.4\textwidth]{LW1_22_53}
+            \end{gather*}
+            \vspace{0pt}
+            \begin{gather*}
+                \textbf{Вейбулловский} \\
+                \begin{aligned}
+                    & \text{Параметр формы: } & 2.4993 \\
+                    & \text{Сдвиг: } & 2.375 \\
+                    & \text{Параметр масштаба: } & 4.4099
+                \end{aligned}\\\\\\
+                \text{Результаты теста} \\
+                \text{Колмогорова-Смирнова:} \\
+                \begin{aligned}
+                    & \text{statistic: } \hspace{60pt} & 0.5389 \\
+                    & \text{pvalue: } \hspace{60pt} & 0.0 \\
+                    & \text{statistic-location: } \hspace{60pt} & 8.905 \\
+                    & \text{statistic-sign: } \hspace{60pt} & -1 \\
+                \end{aligned} \\\\
+                \includegraphics[width=0.4\textwidth]{LW1_22_59}
+            \end{gather*}
+        \end{multicols}
+    \end{minipage}
+    } 
+\end{center}
+
+\vspace{35pt}
+
+Запишем все данные в таблицу
+
+\vfill
+
+\begin{table}[h!]
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+    \begin{adjustbox}{max width=0.8\textwidth}
+        \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        \textbf{Index} & \textbf{Name} & \textbf{Statistic} & \textbf{P-Value} & \textbf{Statistic Location} & \textbf{Statistic Sign} \\
+        \hline
+        0 & norm & 0.089 & 0.284 & 12.767 & -1 \\
+        \hline
+        1 & chi2 & 0.170 & 0.002 & 17.985 & 1 \\
+        \hline
+        2 & expon & 0.189 & 0.000 & 8.206 & -1 \\
+        \hline
+        3 & gamma & 0.132 & 0.028 & 17.985 & 1 \\
+        \hline
+        4 & poisson & 0.190 & 0.000 & 12.040 & -1 \\
+        \hline
+        5 & uniform & 0.048 & 0.932 & 16.195 & 1 \\
+        \hline
+        6 & t & 0.111 & 0.096 & 17.985 & 1 \\
+        \hline
+        7 & lognorm & 0.199 & 0.000 & 6.883 & 1 \\
+        \hline
+        8 & beta & 0.084 & 0.343 & 9.927 & 1 \\
+        \hline
+        9 & weibull\_min & 0.539 & 0.000 & 8.905 & -1 \\
+        \hline
+        \end{tabular}
+    \end{adjustbox}
+    \caption{Результаты критерия Колмогорова-Смирнова}
+    \label{tab:statistical_data1}
+\end{table}
+
+\vspace{20pt}
+
+\newgeometry{left=25mm, right=25mm, top=20mm, bottom=20mm}
+
+Избавимся от строк таблицы со значениями \textsc{p-value} < 0.05
+
+\begin{table}[h!]
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+    \begin{adjustbox}{max width=0.8\textwidth}
+        \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        \textbf{Index} & \textbf{Name} & \textbf{Statistic} & \textbf{P-Value} & \textbf{Statistic Location} & \textbf{Statistic Sign} \\
+        \hline
+        0 & norm & 0.089 & 0.284 & 12.767 & -1 \\
+        \hline
+        5 & uniform & 0.048 & 0.932 & 16.195 & 1 \\
+        \hline
+        6 & t & 0.111 & 0.096 & 17.985 & 1 \\
+        \hline
+        8 & beta & 0.084 & 0.343 & 9.927 & 1 \\
+        \hline
+        \end{tabular}
+    \end{adjustbox}
+    \caption{Отфильтрованные результаты критерия Колмогорова-Смирнова}
+    \label{tab:statistical_data2}
+\end{table}
+
+\vspace{20pt}
+
+Отсортируем по значению \textsc{statistic} в порядке убывания
+
+\begin{table}[h!]
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+    \begin{adjustbox}{max width=0.8\textwidth}
+        \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        \textbf{Index} & \textbf{Name} & \textbf{Statistic} & \textbf{P-Value} & \textbf{Statistic Location} & \textbf{Statistic Sign} \\
+        \hline
+        5 & uniform & 0.048 & 0.932 & 16.195 & 1 \\
+        \hline
+        8 & beta & 0.084 & 0.343 & 9.927 & 1 \\
+        \hline
+        0 & norm & 0.089 & 0.284 & 12.767 & -1 \\
+        \hline
+        6 & t & 0.111 & 0.096 & 17.985 & 1 \\
+        \hline
+        \end{tabular}
+    \end{adjustbox}
+    \caption{Отсортированные результаты критерия Колмогорова-Смирнова}
+    \label{tab:statistical_data3}
+\end{table}
+
+\vspace{20pt}
+
+Исходя из полученных данных, можно сделать вывод, что закон распределения выборки
+с наибольшей вероятностью является \textbf{равномерным}, далее \textbf{бета-распределением},
+\textbf{нормальным} и, наконец, \textbf{t-распределением Стьюдента} (с указанными ранее
+параметрами).\\
+
+Изобразим плотности первых трех законов на совмещенном графике с гистограммой, построенной
+на заданной выборке данных (листинг \ref{lst:13})
+
+\begin{center}
+    \includegraphics[width=0.7\textwidth]{LW1_25_0.png}
+\end{center}
+
+% todo: метод моментов
+
 % --------------------------------------CODE---------------------------------------
 
 \section{Приложение}
@@ -188,7 +734,7 @@
 % Set the style for Python code
 \lstset{style=mystyle, language=Python, extendedchars=\true}
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Подключение библиотек}, label={lst:1}]
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -201,7 +747,7 @@ pd.set_option('display.float_format', '{:.3f}'.format)
 np.set_printoptions(precision=PRECISION)
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Ввод данных}, label={lst:2}]
 _data = [
     14.495, 4.715,  7.175,  8.428,  11.093, 3.375
     12.906, 8.415,  8.916,  13.48,  5.343,  17.985
@@ -227,6 +773,7 @@ _data = [
 \end{lstlisting}
 
 \begin{lstlisting}
+\begin{lstlisting}
 # Variation series
 _parsedData = [_data[i:i+10] for i in range(0, len(_data), 10)] 
 
@@ -237,7 +784,7 @@ _parsedData
     1. Крайние члены вариационного ряда и размах выборки
 \end{center}
 
-\begin{lstlisting}
+\begin{lstlisting} [caption={Поиск крайних членов и размаха выборки}, label={lst:3}]
 # Extreme members
 _maxEl = np.max(_parsedData)
 _minEl = np.min(_parsedData)
@@ -254,7 +801,7 @@ print(f"Размах выборки: {_range}")
     2. Осуществите группировку данных
 \end{center}
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Поиск интервалов}, label={lst:4}]
 # Let's find the number of intervals using Sturges' rule
 _n = len(_data)
 _k = 1 + np.trunc(np.log2(_n))
@@ -267,9 +814,9 @@ _h = _range / _k
 print(f"Шаг интервала: {_h}")
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Функция для нахождения частот}, label={lst:5}]
 # function for finding frequencies
-def findFrequency(minim, maxim, data, islast = False):
+def findFrequency(minim, maxim, data):
     count = 0
 
     for el in data:
@@ -279,7 +826,7 @@ def findFrequency(minim, maxim, data, islast = False):
     return count
 \end{lstlisting}
     
-\begin{lstlisting}
+\begin{lstlisting}[caption={Группировка данных}, label={lst:6}]
 intervals           = [i for i in range(1, int(_k) + 1)] # interval number
 tableRanges         = [] # interval
 frequencies         = [] # frequency
@@ -295,9 +842,7 @@ while (math.floor(curr + _h) <= _maxEl):
     midRange = round((firstEl + secondEl)/2, PRECISION) # middle of the interval
     midRanges.append(midRange)
 
-    frequency = findFrequency(firstEl, secondEl, _data) \
-        if not (abs(curr + _h - _maxEl) < 0.1)          \
-        else findFrequency(firstEl, secondEl, _data, True) # frequency
+    frequency = findFrequency(firstEl, secondEl, _data) # frequency
     frequencies.append(frequency)                          
     
     relativeFrequency = round(frequency / _n, PRECISION) # relative frequency
@@ -306,7 +851,7 @@ while (math.floor(curr + _h) <= _maxEl):
     curr = round(curr + _h, PRECISION)
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Оформление данных в виде таблицы}, label={lst:7}]
 _intervalRange = pd.DataFrame({'номер интервала':       intervals, 
                                'интервал':             tableRanges, 
                                'середина интервала':     midRanges,
@@ -316,7 +861,7 @@ _intervalRange = pd.DataFrame({'номер интервала':       intervals,
 _intervalRange
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Поиск границ интервалов}, label={lst:8}]
 # interval boundaries
 _int1 = midRanges - _h/2
 _int1 = np.append(_int1, _maxEl)
@@ -333,7 +878,7 @@ def buildLine(x, y, color):
     plt.plot(x, y, color=color, linestyle='-', linewidth=1.5)
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Построение гистограммы}, label={lst:9}]
 def buildBar(x, y, overlay = None, showAxis = True):
     RED   = '#6F1D1B'
     BLUE  = '#00ADB5'
@@ -436,7 +981,7 @@ plt.show()
     4. Вычислите выборочное среднее и выборочную дисперсию
 \end{center}
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={поиск выборочного среднего и выборочной дисперсии}, label={lst:10}]
 # sample average
 _overlineX = (1 / _n) * np.sum(_data) 
 
@@ -453,7 +998,7 @@ print(f'выборочная дисперсия: {_S2}')
     графики гистограммы и плотности предполагаемого закона
 \end{center}
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Анализ и вывод полученных данных в ходе теста Колмогорова-Смирнова}, label={lst:11}]
 def align(name, enName, kstestRes, *params):
     def line(n):
         display('-'*n)
@@ -624,14 +1169,6 @@ def align(name, enName, kstestRes, *params):
                             scale=np.std(_data)
                         ), \
                         name + f'(shape={np.round(shape_weibull, PRECISION)})'
-
-        case 'pareto': 
-            def buildLaw(x):
-                b_pareto = 0.1
-                return sp.stats.pareto.pdf(
-                            x - np.min(_data) + 1, 
-                            b_pareto
-                        ), name + f'(shape={b_pareto})'
             
         case default:
             pass
@@ -669,7 +1206,7 @@ def fillArrays(*args):
         arrays[ind].append(el)
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Проведение теста Колмогорова-Смирнова на различных законах}, label={lst:12}]
 data = np.array(_data)
 
 allNames              = []
@@ -679,56 +1216,63 @@ allStatistic_location = []
 allStatistic_sign     = []
 
 # Normal distribution (norm)
-mean, std = sp.stats.norm.fit(data)
+mean = np.mean(_data)
+std = np.std(_data, ddof=1)
 result = sp.stats.kstest(data, 'norm', args=(mean, std))
 fillArrays(result, 
-            'norm', 
-            allNames, 
-            allStatistic, 
-            allPvalue, 
-            allStatistic_location, 
-            allStatistic_sign)
+           'norm', 
+           allNames, 
+           allStatistic, 
+           allPvalue, 
+           allStatistic_location, 
+           allStatistic_sign)
 align('нормальное', 'norm', result, ['среднее', '\\mu', mean], 
                                     ['стандратное отклонение', '\\sigma', std])
 
 # Chi-square distribution (chi2)
-df, loc, scale = sp.stats.chi2.fit(data)
-result = sp.stats.kstest(data, 'chi2', args=(df,))
+df = 2
+loc = np.min(_data)
+scale = np.std(_data)
+result = sp.stats.kstest(data, 'chi2', args=(df, loc, scale))
 fillArrays(result, 
-            'chi2', 
-            allNames, 
-            allStatistic, 
-            allPvalue, 
-            allStatistic_location, 
-            allStatistic_sign)
+           'chi2', 
+           allNames, 
+           allStatistic, 
+           allPvalue, 
+           allStatistic_location, 
+           allStatistic_sign)
 align('хи-квадрат', 'chi2', result, ['количество степеней свободы', '', df], 
                                     ['сдвиг ', '', loc],
                                     ['параметр масштаба', '', scale])
 
 # Exponential distribution (expon)
-loc, scale = sp.stats.expon.fit(data)
+loc = np.min(_data)
+scale = np.mean(_data) - np.min(_data)
 result = sp.stats.kstest(data, 'expon', args=(loc, scale))
 fillArrays(result, 
-            'expon', 
-            allNames, 
-            allStatistic, 
-            allPvalue, 
-            allStatistic_location, 
-            allStatistic_sign)
-align('экспоненциальное', 'expon', result, 
-      ['сдвиг', '', loc], 
-      ['параметр масштаба', '\\frac{1}{\\lambda}', scale])
+           'expon', 
+           allNames, 
+           allStatistic, 
+           allPvalue, 
+           allStatistic_location, 
+           allStatistic_sign)
+align('экспоненциальное', 'expon', result, ['сдвиг', '', loc], 
+                                           ['параметр масштаба', 
+                                           '\\frac{1}{\\lambda}', 
+                                           scale])
 
 # Gamma distribution (gamma)
-shape, loc, scale = sp.stats.gamma.fit(data)
+shape = 2
+loc = np.min(_data)
+scale = np.std(_data)
 result = sp.stats.kstest(data, 'gamma', args=(shape, loc, scale))
 fillArrays(result, 
-            'gamma', 
-            allNames, 
-            allStatistic, 
-            allPvalue, 
-            allStatistic_location, 
-            allStatistic_sign)
+           'gamma', 
+           allNames, 
+           allStatistic, 
+           allPvalue, 
+           allStatistic_location, 
+           allStatistic_sign)
 align('гамма-распределение', 'gamma', result, ['параметр формы', '', shape], 
                                               ['сдвиг ', '', loc],
                                               ['параметр масштаба', '', scale])
@@ -737,52 +1281,56 @@ align('гамма-распределение', 'gamma', result, ['парамет
 lambda_ = np.mean(data)
 result = sp.stats.kstest(data, 'poisson', args=(lambda_,))
 fillArrays(result, 
-            'poisson', 
-            allNames, 
-            allStatistic, 
-            allPvalue, 
-            allStatistic_location, 
-            allStatistic_sign)
+           'poisson', 
+           allNames, 
+           allStatistic, 
+           allPvalue, 
+           allStatistic_location, 
+           allStatistic_sign)
 align('пуассоновское', 'poisson', result, ['параметр интенсивности', '\\mu', lambda_])
 
 # Uniform distribution (uniform)
-loc, scale = sp.stats.uniform.fit(data)
+loc = np.min(_data)
+scale = np.ptp(_data)
 result = sp.stats.kstest(data, 'uniform', args=(loc, scale))
 fillArrays(result, 
-            'uniform', 
-            allNames, 
-            allStatistic, 
-            allPvalue, 
-            allStatistic_location, 
-            allStatistic_sign)
+           'uniform', 
+           allNames, 
+           allStatistic, 
+           allPvalue, 
+           allStatistic_location, 
+           allStatistic_sign)
 align('равномерное', 'uniform', result, ['нижняя граница', '', loc], 
                                         ['размах', '', scale])
 
 # Student's t-distribution (t)
-df, loc, scale = sp.stats.t.fit(data)
+df = 2
+loc = np.mean(_data)
+scale = np.std(_data)
 result = sp.stats.kstest(data, 't', args=(df, loc, scale))
 fillArrays(result, 
-            't', 
-            allNames, 
-            allStatistic, 
-            allPvalue, 
-            allStatistic_location, 
-            allStatistic_sign)
-align('t-распределение Стьюдента', 't', result, 
-      ['количество степеней свободы', '', df], 
-      ['сдвиг', '', loc],
-      ['масштаб', '', scale])
+           't', 
+           allNames, 
+           allStatistic, 
+           allPvalue, 
+           allStatistic_location, 
+           allStatistic_sign)
+align('t-распределение Стьюдента', 't', result, ['количество степеней свободы', '', df], 
+                                                ['сдвиг', '', loc],
+                                                ['масштаб', '', scale])
 
 # Lognormal distribution (lognorm)
-shape, loc, scale = sp.stats.lognorm.fit(data)
+shape = np.std(np.log(_data))
+loc = np.min(_data)
+scale = np.exp(np.mean(np.log(_data)))
 result = sp.stats.kstest(data, 'lognorm', args=(shape, loc, scale))
 fillArrays(result, 
-            'lognorm', 
-            allNames, 
-            allStatistic, 
-            allPvalue, 
-            allStatistic_location, 
-            allStatistic_sign)
+           'lognorm', 
+           allNames, 
+           allStatistic, 
+           allPvalue, 
+           allStatistic_location, 
+           allStatistic_sign)
 align('Логнормальное', 'lognorm', result, ['параметр формы', '', shape], 
                                           ['сдвиг', '', loc],
                                           ['параметр масштаба', '', scale])
@@ -791,43 +1339,33 @@ align('Логнормальное', 'lognorm', result, ['параметр фор
 a, b, loc, scale = sp.stats.beta.fit(data)
 result = sp.stats.kstest(data, 'beta', args=(a, b, loc, scale))
 fillArrays(result, 
-            'beta', 
-            allNames, 
-            allStatistic, 
-            allPvalue, 
-            allStatistic_location, 
-            allStatistic_sign)
+           'beta', 
+           allNames, 
+           allStatistic, 
+           allPvalue, 
+           allStatistic_location, 
+           allStatistic_sign)
 align('бета-распределение', 'beta', result, ['параметр формы 1', '', a], 
-                                         ['параметр формы 2', '', b],
-                                         ['сдвиг', '', loc],
-                                         ['масштаб', '', scale])
+                                            ['параметр формы 2', '', b],
+                                            ['сдвиг', '', loc],
+                                            ['масштаб', '', scale])
 
 # Weibull distribution (weibull_min)
 c, loc, scale = sp.stats.weibull_min.fit(data)
+loc = np.min(_data)
+scale = np.std(_data)
+result = sp.stats.kstest(data, 'weibull_min', args=(c, loc, scale))
 fillArrays(result, 
-            'weibull_min', 
-            allNames, 
-            allStatistic, 
-            allPvalue, 
-            allStatistic_location, 
-            allStatistic_sign)
+           'weibull_min', 
+           allNames, 
+           allStatistic, 
+           allPvalue, 
+           allStatistic_location, 
+           allStatistic_sign)
 align('вейбулловское ', 'weibull_min', result, ['параметр формы', '', c], 
                                                ['сдвиг', '', loc],
                                                ['масштаб', '', scale])
 
-# Pareto distribution (pareto)
-b, loc, scale = sp.stats.pareto.fit(data)
-result = sp.stats.kstest(data, 'pareto', args=(b, loc, scale))
-fillArrays(result, 
-            'pareto', 
-            allNames, 
-            allStatistic, 
-            allPvalue, 
-            allStatistic_location, 
-            allStatistic_sign)
-align('парето ', 'pareto', result, ['параметр формы', '', b], 
-                                   ['сдвиг', '', loc],
-                                   ['масштаб', '', scale])
 
 _kstestData = pd.DataFrame({
     'name': allNames,
@@ -854,7 +1392,7 @@ _kstestData_filtered
 _kstestData_filtered.sort_values(by='statistic')
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Построение графиков плотностей наиболее подходящих законов}, label={lst:13}]
 # Calculate sampling parameters
 mean = np.mean(_data)
 std = np.std(_data, ddof=1)
