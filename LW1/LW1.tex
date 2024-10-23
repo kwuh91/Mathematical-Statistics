@@ -698,7 +698,102 @@ $\lfloor x \rfloor$ — обозначает целую часть числа $x
     \includegraphics[width=0.7\textwidth]{LW1_25_0.png}
 \end{center}
 
-% todo: метод моментов
+Оценим параметры равномерного закона распределения методом моментов
+
+\begin{gather*}
+    M_{\xi} = \int_{-\inf}^{+\inf} x p_{\xi} (x) dx = 
+    \int_{a}^{b} x \cdot \cfrac{1}{b-a} dx = \cfrac{a + b}{2} \\\\
+    M_{\xi} = \overline{X} \Longrightarrow \cfrac{a + b}{2} = \overline{X} 
+    \Longrightarrow a + b = 2 \overline{X} \approx 20.5362 \\\\
+    D_{\xi} = M_{\xi}^2 - (M_{\xi})^2 \\\\
+    M_{\xi}^2 = \int_{-\inf}^{+\inf} x^2 p_{\xi} (x) dx = 
+    \int_{a}^{b} x^2 \cdot \cfrac{1}{b-a} dx = \cfrac{a^2 + ab + b^2}{3} \\\\
+    (M_{\xi})^2 = \cfrac{(a + b)^2}{4} \\\\
+    D_{\xi} = \cfrac{(b - a)^2}{12} \\\\
+    D_{\xi} = S^2 \Longrightarrow \cfrac{(b - a)^2}{12} = S^2 
+    \Longrightarrow (b - a)^2 = 12 S^2 \Longrightarrow b - a = 2 \sqrt{3} \sqrt{S^2}
+    \approx 15.3405
+\end{gather*}
+
+\begin{equation*}
+    \begin{cases}
+        b - a = 15.3405 \\
+        b + a = 20.5362
+    \end{cases} 
+\end{equation*}
+
+\begin{equation*}
+    \begin{cases}
+        a = 2.59785 \\
+        b = 17.93835
+    \end{cases} 
+\end{equation*}\\
+
+(Можно заметить, что найденные параметры не сильно отличаются от тех, что были
+найдены программно)
+
+\subsection{Найдите эмпирическую функцию распределения и постройте 
+совмещенные графики эмпирической и теоретической функций распределения}
+
+Запишем реализацию эмпирической функции распределения femp(x) в виде 
+псевдокода:
+
+\begin{tcolorbox}[colback=gray!10, colframe=gray!50, title=Псевдокод функции femp]
+    \begin{verbatim}
+функция femp(x) {
+    функция ind(x) {
+        возвращает 1 если x > 0, иначе возвращает 0
+    }
+
+    сумма = 0
+    для i в диапазоне (количества интервалов) {
+        сумма += i-й элемент вектора относительных частот * \ 
+                    ind(x минус i-й элемент вектора с \
+                                серединами интервалов)
+    }
+
+    вернуть сумму
+}      
+    \end{verbatim}
+\end{tcolorbox}
+
+Сам же код реализации функции предоставлен в листинге \ref{lst:14}.\\
+
+Построим совмещенные графики эмпирической функции распределения и 
+функции распределения для равномерного закона (a = 2.59785, b = 17.93835), 
+воспользовавшись 
+листингами \ref{lst:15} и \ref{lst:16}.
+
+\begin{center}
+    \includegraphics[width=0.7\textwidth]{LW1_31_0}
+\end{center}
+
+Теперь тоже самое, но для нормального закона ($\mu$ = 10.2681, $\sigma^2$ = 19.6109) 
+(листинги \ref{lst:15} и \ref{lst:17}).\\
+{ \footnotesize \textbf{Примечание}: параметры были найдены с помощью библиотеки 
+\textsc{scipy}}.
+
+\begin{center}
+    \includegraphics[width=0.7\textwidth]{LW1_32_0}
+\end{center}
+
+И для бета-распределения ($\alpha$ = 1.2407, $\beta$ = 0.94412, сдвиг (loc) = 2.375,
+масштаб (scale) = 4.4099) 
+(листинги \ref{lst:15} и \ref{lst:18}).\\
+{ \footnotesize \textbf{Примечание}: параметры были найдены с помощью библиотеки 
+\textsc{scipy}}.
+
+\begin{center}
+    \includegraphics[width=0.7\textwidth]{LW1_33_0}
+\end{center}
+
+\subsection{Вывод}
+
+Первоначальная обработка позволяет предварительно отнести выборку
+(с наибольшей вероятностью) к равномерному закону с параметрами:
+\begin{equation*}
+    a = 2.59785 \qquad b = 17.93835
+\end{equation*}
 
 % --------------------------------------CODE---------------------------------------
 
@@ -1431,9 +1526,11 @@ plt.show()
 \end{lstlisting}
 
 \begin{lstlisting}
-_param = 2 * _overlineX
+_a = _overlineX - np.sqrt(3 * _S2)
+_b = _overlineX + np.sqrt(3 * _S2)
 
-_param
+print(f'a: {_a}')
+print(f'b: {_b}')
 \end{lstlisting}
 
 \begin{center}
@@ -1451,7 +1548,7 @@ for relativeFrequency in relativeFrequencies:
 print(f'kum: {_kum}')
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={эмпирическая функция распределения femp(x)}, label={lst:14}]
 def femp(x):
     def ind(x):
         return 1 if x > 0 else 0
@@ -1463,7 +1560,7 @@ def femp(x):
     return sumy
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={функция построения совмещенных femp(x)}, label={lst:15}]
 def buildFemp(cdf_y_values):
     RED   = '#6F1D1B'
     BLUE  = '#00ADB5'
@@ -1531,34 +1628,42 @@ def buildFemp(cdf_y_values):
     plt.show()
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={нахождение значений y для uniform}, label={lst:16}]
 # uniform
 def uniform_y_values(x_values):
     return [sp.stats.uniform.cdf(
                 x, 
-                loc=np.min(_data), 
-                scale=np.ptp(_data)
+                loc=_a, 
+                scale=_b - _a
             ) for x in x_values]
 
 buildFemp(uniform_y_values)
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={нахождение значений y для norm}, label={lst:17}]
 # norm 
 def norm_y_values(x_values):
     mean, std = sp.stats.norm.fit(data)
     return [sp.stats.norm.cdf(x, mean, std) for x in x_values]
 
 buildFemp(norm_y_values)
+
+display(Math(f'\\mu: {mean}'))
+display(Math(f'\\sigma^2: {std**2}'))
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={нахождение значений y для beta}, label={lst:18}]
 # beta 
 def beta_y_values(x_values):
     a, b, loc, scale = sp.stats.beta.fit(data)
     return [sp.stats.beta.cdf(x, a, b, loc, scale) for x in x_values]
 
 buildFemp(beta_y_values)
+
+display(Math(f'\\alpha: {a}'))
+display(Math(f'\\beta: {b}'))
+print(f'сдвиг (loc): {loc}')
+print(f'масштаб (scale): {scale}')
 \end{lstlisting}
 
 \end{document}
