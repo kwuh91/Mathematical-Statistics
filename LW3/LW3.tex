@@ -1,0 +1,317 @@
+\documentclass[a4paper, 14pt]{extarticle}
+
+\usepackage{../latexDependencies/misc/preamble2}
+
+\geometry{a4paper}
+
+% Название дисциплины
+\newcommand{\subject}{Теория вероятности и математическая статистика} 
+
+% Тип работы
+% lab - для лабораторной работы 
+% hw  - для домашней     работы
+\newcommand{\task}{lab} 
+
+% Номер работы
+\newcommand{\taskNumber}{3} 
+
+% Название работы
+\newcommand{\taskNameOne}{Моделирование выборки из абсолютно непрерывного } 
+\newcommand{\taskNameTwo}{закона распределения методом обратных функций.} 
+
+% Имя студента
+\newcommand{\studentName}{Очкин Н.В.}
+
+% Имя преподававателя
+\newcommand{\teacherName}{Облакова Т.В.}
+
+% Группа
+\newcommand{\group}{ФН11-52Б}
+
+% Вариант
+\newcommand{\variant}{9}
+
+\begin{document}
+
+\graphicspath{ {../latexDependencies/images} } 
+\input{../latexDependencies/frontmatter/titlepage2}
+
+\newgeometry{left=25mm, right=25mm, top=20mm, bottom=20mm}
+
+\graphicspath{ {../latexDependencies/images/LW2} }
+
+% Customize section, subsection, subsubsection and paragraph styles
+\titleformat{\section}
+  {\normalfont\large\bfseries}{\thesection}{1em}{}
+
+\titleformat{\subsection}
+  {\normalfont\normalsize\bfseries}{\thesubsection}{1em}{}
+
+\titleformat{\subsubsection}
+  {\normalfont\small\bfseries}{\thesubsubsection}{1em}{}
+
+\titleformat{\paragraph}
+  {\small\small\bfseries}{\theparagraph}{1em}{}
+
+\thispagestyle{empty}
+
+\null\newpage
+
+\setcounter{tocdepth}{5}
+\setcounter{secnumdepth}{5}
+
+\pagenumbering{roman}
+
+\tableofcontents
+\newpage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\setstretch{1}
+\linespread{1.1}
+
+\setlength{\parindent}{0pt}
+
+\fontsize{12pt}{16pt}\selectfont
+
+% --------------------------------------START--------------------------------------
+
+\section{Задание}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+\begin{enumerate}
+  \item Для данного $n$ методом обратных функций смоделируйте выборку 
+  из закона распределения с заданной плотностью  $p(x)$.
+  \item Для полученной выборки найдите гистограмму относительных частот. 
+  Постройте на одном рисунке графики теоретической плотности $p(x)$ и 
+  гистограмму относительных частот.
+  \item Вычислите выборочное среднее и выборочную дисперсию и сравните с 
+  истинными значениями этих характеристик.
+  \item Используя неравенство \high{Dvoretzky-Kiefer-Wolfowitz}, 
+  постройте 90\% доверительный интервал для функции распределения $F(x)$.
+\end{enumerate}
+
+Приведите графическую иллюстрацию
+
+\section{Исходные данные}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+\begin{equation*}
+  \text{Вариант: }9 \qquad n: 120
+\end{equation*}
+\begin{equation}
+  \scalebox{1.25}{$p(x) = \cfrac{1}{\sqrt{0.4 \pi}x} e^{-(\ln{x} - 2)^2 / 0.4}, \quad x > 0$}
+\end{equation}
+
+\section{Решение}
+
+\subsection{Часть 1}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+Для данного $n$ методом обратных функций смоделируйте выборку 
+из закона распределения с заданной плотностью  $p(x)$.\\
+
+\subsubsection{Функция распределения}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Найдем функцию распределения
+\begin{equation}
+  F_X(x) = \int_{-\infty}^{x} f_X(t)dt, \quad \text{где}
+\end{equation}
+$f_X$ - плотность распределения.\\
+
+\paragraph{Метод интегрирования Монте-Карло}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Для вычисления интеграла воспользуемся численным методом интегрирования Монте-Карло
+\begin{equation}
+  \int_{a}^{b} f(x) dx \approx \cfrac{b-a}{N} \sum_{i=1}^{N} f(u_i), \quad \text{где}
+\end{equation}
+$u$ - равномерно распредленная на отрезке интегрирования $[a, b]$ случайная величина.\\
+
+Геометрическая интерпретация данного метода похожа на известный детерминистический метод, 
+с той разницей, что вместо равномерного разделения области интегрирования на маленькие интервалы 
+и суммирования площадей получившихся «столбиков» мы забрасываем область интегрирования случайными 
+точками, на каждой из которых строим такой же «столбик», определяя его ширину как 
+$\cfrac{b - a}{N}$, и суммируем их площади.\\
+
+Точность оценки данного метода зависит только от количества точек $N$.\\
+
+\paragraph{Линейный конгруэнтный метод}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Для генерации случайных величин воспользуемся одним из методов генерации псевдослучайных чисел - 
+\textbf{Линейным конгруэнтным методом}.\\
+Суть метода заключается в вычислении последовательности случайных чисел $X_n$, полагая
+\begin{equation}
+  X_{n+1} = (aX_n + c)\hspace{3pt} \text{mod} \hspace{3pt} m, \quad \text{где}
+\end{equation}
+$m$ - модуль ($m \geq 2$); \\
+$a$ - множитель ($0 \leq a < m$); \\
+$c$ - приращение ($0 \leq c < m$); \\
+$X_0$ - начальное значение ($0 \leq X_0 < m$).\\
+
+За значениями параметров обратимся к [\ref{item:source1}].
+\begin{equation}
+  m = 2^{(60)} - 93 \qquad a = 561860773102413563 \qquad c = 0.
+\end{equation}
+В случае когда $c = 0$, метод называют \textbf{мультипликативным конгруэнтным методом}.
+
+\subsubsection{Реализация численного нахождения функции распределения}
+
+\paragraph{Реализация ЛКМ}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Реализуем на языке программирования \high{python} линейный конгруэнтный метод (4), используя 
+параметры (5):\\
+
+\begin{lstlisting}[language=Python, caption={Реализация ЛКМ}, label={lst:LCG}]
+class LCG:
+  def __init__(self, 
+               seed, a=561860773102413563, c=0, m=2**60-93):
+      self.seed = seed
+      self.a = a
+      self.c = c
+      self.m = m
+      self.state = seed
+
+  def next(self):
+      self.state = (self.a * self.state + self.c) % self.m
+      return self.state / self.m # Normalize to [0, 1)
+  
+  def next_in_range(self, a, b):
+      return a + (b - a) * self.next()
+  \end{lstlisting}
+
+\paragraph{Реализация метода Монте-Карло}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Теперь реализуем интегрирование методом Монте-Карло, используя ранее 
+описаннный ЛКМ (листинг \ref{lst:LCG}):\\
+
+\begin{lstlisting}[language=Python, caption={Реализация метода Монте-Карло}, label={lst:MonteCarlo}]
+class MonteCarlo:
+  def __init__(self, N, PRNG_object):
+      self.N = N
+      self.PRNG = PRNG_object
+  
+  def integrate(self, f, a, b):
+      mult = (b - a) / self.N
+      
+      generatedValues = []
+      for _ in range(self.N):
+          randomArg = self.PRNG.next_in_range(a, b)
+          randomFuncVal = f(randomArg)
+
+          generatedValues.append(randomFuncVal)
+      
+      return mult * sum(generatedValues)
+\end{lstlisting}
+
+\paragraph{Реализация функции распределения}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Объединим теперь (2) и (3) и получим:
+\begin{equation}
+  F_X(x) = \int_{-\infty}^{x} f_X(t)dt \approx \cfrac{x + \infty}{N} 
+  \sum_{i=1}^N f(u_i), \quad \text{где}
+\end{equation}
+$u_i$ ищем в соответствии с (4).\\
+
+В общем случае пришлось бы производить замену, чтобы свести бесконечные пределы в конечные, 
+однако в нашем случае это не требуется, тк (1) определена при $x > 0$.\\
+Подставляя (1) в (6) и (5) в (4):
+\begin{equation}
+  F_X(x) = \int_{0}^{t} \cfrac{1}{\sqrt{0.4 \pi}t} e^{-(\ln{t} - 2)^2 / 0.4} dx 
+  \approx \cfrac{x}{N} \sum_{i=1}^{N} \cfrac{1}{\sqrt{0.4 \pi}u_i} e^{-(\ln{u_i} - 2)^2 / 0.4}, 
+  \quad \text{где}
+\end{equation} 
+$u_{i} = (561860773102413563 \cdot u_{i-1})\hspace{3pt} \text{mod} 
+\hspace{3pt} 2^{60} - 93$ \\\\
+
+При программной реализации нас не сильно интересуют конкретные начальное значение 
+в ЛКМ и значение $N$ в методе Монте-Карло. \\
+Первое выбирается так, чтобы $x_0 \neq 0$. Это необходимо для того, чтобы 
+последовательность была полной длины, т.е. имела максимальную периодичность 
+при генерации чисел. Обычно используют случайное или произвольно выбранное 
+значение из множества $\{1, ..., m - 1\}$ [\ref{item:source1}]. \\
+Второе, как уже было сказано ранее, отвечает за точность полученной оценки метода, так 
+что чем оно больше, тем лучше.
+
+\begin{lstlisting}[language=Python, caption={Реализация функции распределения}, label={lst:cdf}]
+if __name__ == '__main__':
+  lcg        = LCG(seed=42)
+  monteCarlo = MonteCarlo(100000000, lcg)
+  
+  def pdf(x): # f_X
+      return 1 / (math.sqrt(0.4 * math.pi) * x) \
+          * math.exp(-(math.log(x) - 2)**2 / 0.4)
+
+  def cdf(x): # F_X
+      return monteCarlo.integrate(pdf, 0, x)
+\end{lstlisting}
+\vspace{10pt}
+где классы \textbf{LCG} и \textbf{MonteCarlo} представлены в листингах 
+\ref{lst:LCG} и \ref{lst:MonteCarlo} соответственно.
+ 
+\subsubsection{Обратная функция}
+
+\paragraph{Метод Ньютона}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Для нахождения обратной функции воспользуемся методом касательных (Ньютона). \\
+Рабочая формула
+\begin{equation*}
+  x_{n+1} = x_n - \cfrac{f(x_n)}{f'(x_n)}
+\end{equation*}
+Вообще говоря, метод используется для нахождения корня заданной функции. Так что 
+для нахождения обратной функции $y = f(x)$, т.е. $x = f^{-1}(y)$ будем искать 
+решение уравнения: $f(x) - y = 0$
+\begin{equation}
+  x_{n+1} = x_n - \cfrac{f(x_n) - y}{(f(x_n) - y)'_x} = 
+  x_n - \cfrac{f(x_n) - y}{f'(x_n)}
+\end{equation}
+Погрешность $\varepsilon$ возьмем равной 0.0001.
+
+\paragraph{Метод центральных разностей}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Производные будем искать методом центральных разностей.\\
+Рабочая формула
+\begin{equation}
+  f'(x) \approx \cfrac{f(x+h) - f(x-h)}{2h}
+\end{equation}
+Погрешность определяется как $O(h)$, $h$ примем равной 1e-6.\\
+
+Подставив (9) в (8), получим:
+\begin{equation}
+  x_{n+1} = x_n - \cfrac{(f(x_n) - y) \cdot 2 h}{f(x_n + h) - f(x_n - h)}
+\end{equation}
+
+
+\newpage
+\section{Список использованных источников}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+\begin{enumerate}
+  \item \label{item:source1} L'Ecuyer, Pierre (January 1999). "Tables of Linear Congruential Generators of Different Sizes and Good Lattice Structure" - С. 256
+\end{enumerate}
+
+\end{document}
+
+% Прежде чем реализовывать вычисление самой функции, заметим, что в пределах 
+% интегрирования (2) присутствует бесконечность, что затрудняет интегрирование 
+% методом Монте-Карло (3). \\
+% Воспользуемся заменой, чтобы свести бесконечные пределы в конечные:
+% \begin{gather*}
+%   F_X(x) = \int_{-\infty}^{x} f_X(t)dt = \\[1em]
+%   = \left[\hspace{5pt}
+%     \begin{gathered}
+%     t       = \tan(v)                            \\
+%     v       = \arctan(t)                         \\
+%     dt      = \cfrac{1}{\cos^2(v)} dv            \\
+%     x       : v=\arctan{x}                       \\ 
+%     -\infty : v=\arctan(-\infty)=-\cfrac{\pi}{2} \\
+%     \end{gathered}\,
+%   \hspace{5pt}\right] = \\[1em]
+%   = \int_{-\cfrac{\pi}{2}}^{\arctan(x)} f_X(\tan(v)) \cdot \cfrac{1}{\cos^2(v)} dv
+% \end{gather*}
+
+% Итого получим:
+% \begin{equation*}
+%   F_X(x) = \int_{-\cfrac{\pi}{2}}^{\arctan(x)} f_X(\tan(v)) \cdot \cfrac{1}{\cos^2(v)} dv
+% \end{equation*}
+
+% Обозначим $f_X(\tan(v)) \cdot \cfrac{1}{\cos^2(v)}$ за $g(v)$ и подставим в (3):
+% \begin{equation}
+%   F_X(x) = \int_{-\cfrac{\pi}{2}}^{\arctan(x)} g(v) dv \approx 
+%   \cfrac{\arctan(x) + \frac{\pi}{2}}{N} \sum_{i=1}^{N} g(u_i), \quad \text{где}
+% \end{equation}
+% $u_i$ ищем в соответствии с (листинг \ref{lst:LCG})
