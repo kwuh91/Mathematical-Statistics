@@ -261,7 +261,7 @@ if __name__ == '__main__':
   x_{n+1} = x_n - \cfrac{f(x_n) - y}{(f(x_n) - y)'_x} = 
   x_n - \cfrac{f(x_n) - y}{f'(x_n)}
 \end{equation}
-Погрешность $\varepsilon$ возьмем равной 0.0001.
+Погрешность $\varepsilon$ возьмем равной 0.001.
 
 \paragraph{Метод центральных разностей}\vspace{-20pt}\rule{\linewidth}{0.1mm}
 
@@ -277,6 +277,9 @@ if __name__ == '__main__':
   x_{n+1} = x_n - \cfrac{(f(x_n) - y) \cdot 2 h}{f(x_n + h) - f(x_n - h)}
 \end{equation}
 
+\subsubsection{Реализация численного обратной функции}
+
+\paragraph{Реализация ЛКМ}\vspace{-20pt}\rule{\linewidth}{0.1mm}
 
 \newpage
 \section{Список использованных источников}\vspace{-20pt}\rule{\linewidth}{0.1mm}

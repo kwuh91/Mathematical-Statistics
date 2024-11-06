@@ -84,6 +84,22 @@
 \newcommand{\matr}[1]{\underline{\underline{#1}}}
 \newcommand{\high}[1]{\textsc{\footnotesize #1}}
 
+\makeatletter
+\newcommand\incircbin
+{%
+  \mathpalette\@incircbin
+}
+\newcommand\@incircbin[2]
+{%
+  \mathbin%
+  {%
+    \ooalign{\hidewidth$#1#2$\hidewidth\crcr$#1\bigcirc$}%
+  }%
+}
+\newcommand{\oeq}{\incircbin{=}}
+\makeatother
+
+
 % Hyperlinks setup
 \usepackage{hyperref}
 \definecolor{links}{rgb}{0.36,0.54,0.66}
