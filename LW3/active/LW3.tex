@@ -207,10 +207,238 @@ $f_X(x)$ - плотность распределения.\\
 
 \paragraph{Реализация метода центральных разностей}\vspace{-20pt}\rule{\linewidth}{0.1mm}
 
+Реализуем на языке программирования python метод центральных разностей (5):
 
+\begin{lstlisting}[language=Python, 
+                   caption={Реализация метода центральных разностей}, 
+                   label={lst:CDM}]
+class CDM:
+  def __init__(self, h):
+      self.h = h
+  
+  def diff(self, f, x):
+      numerator = f(x + self.h) - f(x - self.h)
+      denominator = 2 * self.h
+
+      return numerator / denominator
+\end{lstlisting}
 
 \paragraph{Реализация метода Ньютона}\vspace{-20pt}\rule{\linewidth}{0.1mm}
 
+Теперь реализуем метод Ньютона (4), используя метод центральных разностей 
+(листинг \ref{lst:CDM}):
 
+\begin{lstlisting}[language=Python, 
+  caption={Реализация метода Ньютона}, 
+  label={lst:Newton}]
+class Newton:
+  def __init__(self, f, CDM_object, tol=1e-6, max_iter=1000):
+      self.f = f
+      self.CDM = CDM_object
+      self.tol = tol 
+      self.max_iter = max_iter
+
+  def solve(self, y, x0):
+      x = x0
+      for _ in range(self.max_iter):
+          f_x = self.f(x) - y
+          f_prime_x = self.CDM.diff(self.f, x)
+          if abs(f_prime_x) < 1e-10:
+              raise ValueError("Derivative is zero, method fails.")
+          x_new = x - f_x / f_prime_x
+          if abs(x_new - x) < self.tol:
+              return x_new
+          x = x_new
+
+      raise ValueError(f"Method did not converge.({x_new})")
+\end{lstlisting}
+
+\paragraph{Реализация нахождения обратной функции}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+В конечном итоге получим:\\
+
+\begin{lstlisting}[language=Python, 
+                   caption={Реализация нахождения обратной функции}, 
+                   label={lst:inverse}]
+if __name__ == '__main__':
+  def cdf(x): # F_X
+      return 1/2 + 1/2 * \
+          scipy.special.erf((np.log(x) - 2)/(np.sqrt(0.4)))
+
+  cdm    = CDM(h=1e-6)
+  newton = Newton(cdf, cdm, tol=1e-6, max_iter=1000)
+
+  def inverse(y, x0): # x = f^-1(y)
+      return newton.solve(y, x0)
+\end{lstlisting}
+\vspace{10pt}
+где\\ 
+функция cdf - программная запись, найденной ранее функции распределения (3);\\
+функция inverse - функция, возвращающее значение обратной функции к (3) в точке.\\
+
+{\footnotesize \textbf{Примечание:} Библиотеки scipy и numpy используются только 
+для доступа к функции ошибок, натуральному логарифму и квадратному корню.}
+
+\subsubsection{Генерация псевдослучайных чисел}
+
+\paragraph{Линейный конгруэнтный метод}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Для генерации случайных величин воспользуемся одним из методов генерации псевдослучайных чисел - 
+\textbf{Линейным конгруэнтным методом}.\\
+Суть метода заключается в вычислении последовательности случайных чисел $X_n$, полагая
+\begin{equation}
+  X_{n+1} = (aX_n + c)\hspace{3pt} \text{mod} \hspace{3pt} m, \quad \text{где}
+\end{equation}
+$m$ - модуль ($m \geq 2$); \\
+$a$ - множитель ($0 \leq a < m$); \\
+$c$ - приращение ($0 \leq c < m$); \\
+$X_0$ - начальное значение ($0 \leq X_0 < m$).\\
+
+За значениями параметров обратимся к [\ref{item:source1}].
+\begin{equation}
+  m = 2^{(60)} - 93 \qquad a = 561860773102413563 \qquad c = 0.
+\end{equation}
+В случае когда $c = 0$, метод называют \textbf{мультипликативным конгруэнтным методом}.
+
+\paragraph{Реализация ЛКМ}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Реализуем линейный конгруэнтный метод (7), используя параметры (8):\\
+
+\begin{lstlisting}[language=Python, caption={Реализация ЛКМ}, label={lst:LCG}]
+class LCG:
+  def __init__(self, 
+               seed, a=561860773102413563, c=0, m=2**60-93):
+      self.seed = seed
+      self.a = a
+      self.c = c
+      self.m = m
+      self.state = seed
+
+  def next(self):
+      self.state = (self.a * self.state + self.c) % self.m
+      return self.state / self.m # Normalize to [0, 1)
+\end{lstlisting}
+
+\paragraph{Моделирование выборки}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Наконец смоделируем 120 случайных величин в виде вектора линейным конгруэнтным методом:\\
+\begin{lstlisting}[language=Python]
+n = 120
+lcg = LCG(seed=42)
+
+data = [lcg.next() for _ in range(n)]
+print(data)
+\end{lstlisting}
+\vspace{10pt}
+Начальное значение (seed) в ЛКМ выбирается так, чтобы $x_0 \neq 0$. Это необходимо для того, чтобы 
+последовательность была полной длины, т.е. имела максимальную периодичность 
+при генерации чисел. Обычно используют случайное или произвольно выбранное 
+значение из множества $\{1, ..., m - 1\}$ [\ref{item:source1}]. 
+
+\noindent
+\begin{adjustbox}{max width=1\textwidth}
+  \parbox{\linewidth}{%
+    \begin{gather*}
+      Y = [ \\
+      \begin{aligned}
+        & 0.4681345399559361,  & \hspace{3pt} & 0.28877877653947137, & \hspace{3pt} & 0.7967245668609647,  & \hspace{3pt} & 0.36660207712361836, & \\
+        & 0.39916205448514674, & \hspace{3pt} & 0.06733862417721515, & \hspace{3pt} & 0.4490674222045938,  & \hspace{3pt} & 0.5437707128785809,  & \\
+        & 0.44328418118099794, & \hspace{3pt} & 0.10138307777823315, & \hspace{3pt} & 0.33969527114335946, & \hspace{3pt} & 0.05922435108111392, & \\
+        & 0.7992621310298111,  & \hspace{3pt} & 0.4096856372108328,  & \hspace{3pt} & 0.9369160399669172,  & \hspace{3pt} & 0.63015184507485,    & \\  
+      \end{aligned} \\
+      ...\\
+      ]
+    \end{gather*}
+  }
+\end{adjustbox}
+
+Теперь пересчитаем полученный вектор случайных величин, в соответствии с функцией inverse из 
+листинга \ref{lst:inverse}. \\
+Однако сперва подеберем вектор начальных приближений, так как того требует метод Ньютона.
+
+\vspace{-80pt}
+\includegraphics[width=1\textwidth]{cdf}
+\vspace{-80pt}
+
+Из графика видно, что функция (3) приблизительно принимает значения $0 < x < 20$ при $0 < y < 1$. 
+Исходя из этого подберем вектор начальных приближений: \\ \null
+[0, 3, 6, 9, 12, 15, 18, 21]. \\
+
+Итого имеем:
+
+\begin{lstlisting}[language=Python]
+guesses = [0, 3, 6, 9, 12, 15, 18, 21]
+for ind, el in enumerate(data):
+    for attempt, guess in enumerate(guesses):
+        try: 
+            inv_value = inverse(el, guess)
+            data[ind] = inv_value
+            break
+        except:
+            pass
+
+        if attempt == len(guesses) - 1:
+            raise Exception('Solution was not found')
+\end{lstlisting}
+
+\noindent
+\begin{adjustbox}{max width=1\textwidth}
+  \parbox{\linewidth}{%
+    \begin{gather*}
+      X = [ \\
+      \begin{aligned}
+        & 7.129497868653516,  & \hspace{3pt} & 5.75990939608953,  & \hspace{3pt} & 10.709998315639028, & \hspace{3pt} & 6.344319895512703, & \\
+        & 6.591160899999072,  & \hspace{3pt} & 3.784860187755976, & \hspace{3pt} & 6.977904630768007,  & \hspace{3pt} & 7.761423453312197, & \\
+        & 6.932399313501684,  & \hspace{3pt} & 4.180285314129899, & \hspace{3pt} & 6.14211341489262,   & \hspace{3pt} & 3.6757503707970156,& \\ 
+        & 10.753239775187453, & \hspace{3pt} & 6.671716126948868, & \hspace{3pt} & 14.643019921504544, & \hspace{3pt} & 8.572755366367943, & \\ 
+      \end{aligned} \\
+      ...\\
+      ]
+    \end{gather*}
+  }
+\end{adjustbox}
+
+\subsection{Часть 2}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Для полученной выборки найдите гистограмму относительных частот. 
+Постройте на одном рисунке графики теоретической плотности $p(x)$ и 
+гистограмму относительных частот.
+
+\subsubsection{Первоначальная обработка полученных статистических данных}
+
+\paragraph{Крайние члены вариационного ряда и размах выборки}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Найдем крайние члены вариационного ряда как минимальное и максимальное значения 
+набора данных, а также размах выборки, как их разницу:
+
+\vspace{10pt}
+
+\begin{lstlisting}[language=Python]
+mini, maxi = min(data), max(data)
+print(mini, maxi)
+
+range = maxi - mini
+print(range)
+\end{lstlisting}
+
+\vspace{-5pt}
+
+\begin{align*}
+  & \text{Крайние члены: }  3.1658, \hspace{5pt} 36.3487 \\
+  & \text{Размах выборки: }  33.1829
+\end{align*}
+
+{\footnotesize \textbf{Примечание:} Выводимые данные округлены до 4х знаков для удобства чтения.}
+
+\paragraph{Группировка данных}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+
+% ------------------------------------LITERATURE------------------------------------
+
+\newpage
+\section{Список использованных источников}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+\begin{enumerate}
+  \item \label{item:source1} L'Ecuyer, Pierre (January 1999). "Tables of Linear Congruential Generators of Different Sizes and Good Lattice Structure" - С. 256
+\end{enumerate}
 
 \end{document}
