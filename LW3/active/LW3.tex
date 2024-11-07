@@ -129,8 +129,9 @@
 
 Найдем функцию распределения:
 \begin{equation}
-    F_X(x) = \int_{-\infty}^{x} f_X(t) dt, \quad \text{где}
+    F_X(x) = \int_{-\infty}^{x} f_X(t) dt,
 \end{equation}
+где\\
 $f_X(x)$ - плотность распределения.\\
 
 Подставим (1) в (2):
@@ -310,8 +311,9 @@ if __name__ == '__main__':
 \textbf{Линейным конгруэнтным методом}.\\
 Суть метода заключается в вычислении последовательности случайных чисел $X_n$, полагая
 \begin{equation}
-  X_{n+1} = (aX_n + c)\hspace{3pt} \text{mod} \hspace{3pt} m, \quad \text{где}
+  X_{n+1} = (aX_n + c)\hspace{3pt} \text{mod} \hspace{3pt} m, 
 \end{equation}
+где\\
 $m$ - модуль ($m \geq 2$); \\
 $a$ - множитель ($0 \leq a < m$); \\
 $c$ - приращение ($0 \leq c < m$); \\
@@ -353,7 +355,6 @@ n = 120
 lcg = LCG(seed=340751464)
 
 data = [lcg.next() for _ in range(n)]
-print(data)
   \end{lstlisting}
 \end{center}
 \vspace{10pt}
@@ -445,10 +446,8 @@ for ind, el in enumerate(data):
 \begin{center}
   \begin{lstlisting}[language=Python]
 mini, maxi = min(data), max(data)
-print(mini, maxi)
 
 range_ = maxi - mini
-print(range_)
   \end{lstlisting}
 \end{center}
 
@@ -461,8 +460,6 @@ print(range_)
 
 {\footnotesize \textbf{Примечание:} Выводимые данные округлены до 4х знаков для удобства чтения.}
 
-\newpage
-
 \paragraph{Группировка данных}\vspace{-20pt}\rule{\linewidth}{0.1mm}
 
 Для начала определим количество интервалов, воспользовавшись правилом
@@ -470,7 +467,8 @@ print(range_)
 \begin{equation*}
     k = 1 + \lfloor \log_2 n \rfloor,
 \end{equation*}
-где $n$ — общее число наблюдений величины, \\ 
+где \\
+$n$ — общее число наблюдений величины, \\ 
 $\log_2$ — логарифм по основанию 2, \\
 $\lfloor x \rfloor$ — обозначает целую часть числа $x$. \\
 
@@ -527,7 +525,9 @@ for i in range(k):
 \end{center}
 \vspace{10pt}
 Полученную группировку представим в виде таблицы:
-\vspace{10pt}
+
+\vfill
+
 \begin{table}[h!]
   \centering
   \renewcommand{\arraystretch}{1.5}
@@ -557,6 +557,10 @@ for i in range(k):
   \label{tab:your_table_label}
 \end{table}
 
+\vfill
+
+\newpage
+
 \paragraph{Гистограмма относительных частот}\vspace{-20pt}\rule{\linewidth}{0.1mm}
 
 Построим на одном рисунке графики теоретической плотности (1) и гистограмму относительных
@@ -570,6 +574,8 @@ x_axis = [el['middle']                 for el in grouped_data]
 y_axis = [el['relative frequency'] / h for el in grouped_data]
   \end{lstlisting}
 \end{center}
+
+\vspace{-20pt}
 
 \begin{align*}
   & \text{int}: [ 3.6258 \hspace{10pt} 6.6718  \hspace{10pt} 9.7177 \hspace{10pt} 12.7637 \hspace{10pt} 15.8096 \hspace{10pt} 18.8556 \hspace{10pt} 21.9016] \\
@@ -588,7 +594,7 @@ def pdf(x):
 
 def buildBar(x, y):
 
-  # histogtamm 
+  # histogramm 
   plt.bar(x, y, color='white', edgecolor='black')
 
   # pdf
@@ -606,11 +612,9 @@ buildBar(x_axis, y_axis)
 {\footnotesize \textbf{Примечание:} код был несколько упрощен, чтобы не загромождать текст, 
 полный код см. в приложении.}
 
-\vfill
+% \vfill
 \includegraphics[width=1\textwidth]{histXpdf}
-\vfill
-
-\newpage
+% \vfill
 
 \subsection{Часть 3}\vspace{-20pt}\rule{\linewidth}{0.1mm}
 
@@ -623,16 +627,18 @@ buildBar(x_axis, y_axis)
 
 Запишем формулу для математического ожидания:
 \begin{equation}
-  \mathbb{E}[X] = \int_{-\infty}^{\infty} x f_X (x) dx, \qquad \text{где}
+  \mathbb{E}[X] = \int_{-\infty}^{\infty} x f_X (x) dx, 
 \end{equation}
+где\\
 $f_X (x)$ - плотность распределения.\\ 
 
 \paragraph{Метод интегрирования Монте-Карло}\vspace{-20pt}\rule{\linewidth}{0.1mm}
 
-Для вычисления интеграла воспользуемся численным методом интегрирования Монте-Карло
+Для вычисления интеграла воспользуемся численным методом интегрирования Монте-Карло:
 \begin{equation}
-  \int_{a}^{b} f(x) dx \approx \cfrac{b-a}{N} \sum_{i=1}^{N} f(u_i), \quad \text{где}
+  \int_{a}^{b} f(x) dx \approx \cfrac{b-a}{N} \sum_{i=1}^{N} f(u_i),
 \end{equation}
+где\\
 $u$ - равномерно распредленная на отрезке интегрирования $[a, b]$ случайная величина.\\
 
 Геометрическая интерпретация данного метода похожа на известный детерминистический метод, 
@@ -690,7 +696,7 @@ class MonteCarlo:
 методом Монте-Карло (10). \\
 Воспользуемся заменой, чтобы свести бесконечные пределы в конечные:
 \begin{gather*}
-  \mathbb{E}[X] = \int_{-\infty}^{+\infty} x f_X(t)dt = \\[1em]
+  \mathbb{E}[X] = \int_{-\infty}^{+\infty} x f_X(x)dx = \\[1em]
   = \left[\hspace{5pt}
     \begin{gathered}
     x       = \tan(t)                             \\
@@ -709,12 +715,13 @@ class MonteCarlo:
   \qquad g(t) = \tan(t) \cdot f_X(\tan(t)) \cdot \cfrac{1}{\cos^2(t)}
 \end{equation}
 
-Объединим теперь (11) и (10) и получим:
+Объединим теперь (11) и (10), и получим:
 \begin{equation}
   \mathbb{E}[X] = \int_{-\infty}^{+\infty} x f_X(x)dx = 
   \int_{-\frac{\pi}{2}}^{\frac{\pi}{2}} g(t) dt \approx 
-  \cfrac{\pi}{N} \sum_{i=1}^N g(u_i), \quad \text{где}
+  \cfrac{\pi}{N} \sum_{i=1}^N g(u_i), 
 \end{equation}
+где\\
 $g(x) = \tan(x) \cdot f_X(\tan(x)) \cdot \cfrac{1}{\cos^2(x)}$, \\[1em]
 $u_i$ ищем в соответствии с (листинг \ref{lst:LCG}).\\
 
@@ -724,8 +731,9 @@ $u_i$ ищем в соответствии с (листинг \ref{lst:LCG}).\\
   \int_{0}^{\frac{\pi}{2}} \tan(t) f_X(\tan(t)) \cfrac{1}{\cos^2(t)} dt \approx \\[1em]
   \approx \cfrac{\pi / 2}{N} \sum_{i=1}^{N} \left[ \tan(u_i) \cdot 
   \cfrac{1}{\sqrt{0.4 \pi} \tan(u_i)} e^{-(\ln(\tan(u_i)) - 2)^2 /0.4}  
-  \cdot \cfrac{1}{\cos^2(u_i)} \right], \quad \text{где}
+  \cdot \cfrac{1}{\cos^2(u_i)} \right], 
 \end{gather*}
+где\\
 $u_{i} = (561860773102413563 \cdot u_{i-1})\hspace{3pt} \text{mod} 
 \hspace{3pt} 2^{60} - 93$ \\\\
 
@@ -809,6 +817,8 @@ S2 = 1 / (n - 1) * sum([(x - OverlineX)**2 for x in data])
 \end{equation*}
 
 \paragraph{Сравнение}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Сравним полученные данные.
 
 \begin{equation*}
   \left| \mathbb{E}[X] - \overline{X} \right| \hspace{100pt}
@@ -917,9 +927,13 @@ def buildPlots():
 {\footnotesize \textbf{Примечание:} код был несколько упрощен, чтобы не загромождать текст, 
 полный код см. в приложении.}
 
-\vspace{30pt}
+\vfill
 
 \includegraphics[width=1\textwidth]{Dvoretzky-Kiefer-Wolfowitz}
+
+\vfill
+
+\newpage
 
 \section{Вывод}\vspace{-20pt}\rule{\linewidth}{0.1mm}
 
@@ -1123,7 +1137,7 @@ if __name__ == '__main__':
         # Create the figure and axis
         _, ax = plt.subplots(figsize=(10, 6))
 
-        # histogtamm
+        # histogramm
         ax.bar(x, y, width=3.05, color='none', 
                                  edgecolor='black', 
                                  linewidth=1.5)
@@ -1166,7 +1180,7 @@ if __name__ == '__main__':
     # print(f'x: {np.round(x_axis, 4)}')
     # print(f'y: {np.round(y_axis, 4)}')
 
-    # buildBar(x_axis, y_axis)
+    buildBar(x_axis, y_axis)
 
     # --------------------------PART7--------------------------
 
@@ -1236,7 +1250,7 @@ if __name__ == '__main__':
         SIZE_TICKS   = 10
 
         # Create the figure and axis
-        _, ax = plt.subplots(figsize=(10, 6))  # Adjust the figure size as needed
+        _, ax = plt.subplots(figsize=(10, 6))
 
         x_values = np.linspace(0.01, trunc(maxi) + 1, 1000)
 
