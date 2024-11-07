@@ -75,6 +75,23 @@
 
 \fontsize{12pt}{16pt}\selectfont
 
+\definecolor{myblue}{HTML}{0A88C2}
+\definecolor{myred}{HTML}{FF1B1C}
+\definecolor{mygreen}{HTML}{386641}
+
+\lstdefinestyle{mystyle}{
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{myblue},
+    stringstyle=\color{myred},
+    commentstyle=\color{green!50!black},
+    showstringspaces=false,
+    frame=leftline, 
+    framesep=10pt, 
+}
+
+% Set the style for Python code
+\lstset{style=mystyle, extendedchars=\true}
+
 % --------------------------------------START--------------------------------------
 
 \section{Задание}\vspace{-20pt}\rule{\linewidth}{0.1mm}
@@ -904,8 +921,6 @@ def buildPlots():
 
 \includegraphics[width=1\textwidth]{Dvoretzky-Kiefer-Wolfowitz}
 
-\newpage
-
 \section{Вывод}\vspace{-20pt}\rule{\linewidth}{0.1mm}
 
 В ходе проделанной лабораторной работы было проведено моделирование выборки из 
@@ -917,7 +932,11 @@ def buildPlots():
 
 % ---------------------------------------CODE---------------------------------------
 
+\newpage
+
 \section{Приложение}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Программный код, с помощью которого была выполнена данная лабораторная работа.\\
 
 \begin{center}
   \begin{lstlisting}[language=Python]
@@ -1282,7 +1301,8 @@ if __name__ == '__main__':
 
 % ------------------------------------LITERATURE------------------------------------
 
-\newpage
+\vfill
+
 \section{Список использованных источников}\vspace{-20pt}\rule{\linewidth}{0.1mm}
 \begin{enumerate}
   \item \label{item:source1} L'Ecuyer, Pierre (January 1999). "Tables of Linear Congruential Generators of Different Sizes and Good Lattice Structure" - С. 256
