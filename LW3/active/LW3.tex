@@ -209,7 +209,8 @@ $f_X(x)$ - плотность распределения.\\
 
 Реализуем на языке программирования python метод центральных разностей (5):
 
-\begin{lstlisting}[language=Python, 
+\begin{center}
+  \begin{lstlisting}[language=Python, 
                    caption={Реализация метода центральных разностей}, 
                    label={lst:CDM}]
 class CDM:
@@ -221,14 +222,16 @@ class CDM:
       denominator = 2 * self.h
 
       return numerator / denominator
-\end{lstlisting}
+  \end{lstlisting}
+\end{center}
 
 \paragraph{Реализация метода Ньютона}\vspace{-20pt}\rule{\linewidth}{0.1mm}
 
 Теперь реализуем метод Ньютона (4), используя метод центральных разностей 
 (листинг \ref{lst:CDM}):
 
-\begin{lstlisting}[language=Python, 
+\begin{center}
+  \begin{lstlisting}[language=Python, 
   caption={Реализация метода Ньютона}, 
   label={lst:Newton}]
 class Newton:
@@ -251,13 +254,15 @@ class Newton:
           x = x_new
 
       raise ValueError(f"Method did not converge.({x_new})")
-\end{lstlisting}
+  \end{lstlisting}
+\end{center}
 
 \paragraph{Реализация нахождения обратной функции}\vspace{-20pt}\rule{\linewidth}{0.1mm}
 
-В конечном итоге получим:\\
+В конечном итоге получим:
 
-\begin{lstlisting}[language=Python, 
+\begin{center}
+  \begin{lstlisting}[language=Python, 
                    caption={Реализация нахождения обратной функции}, 
                    label={lst:inverse}]
 if __name__ == '__main__':
@@ -270,7 +275,8 @@ if __name__ == '__main__':
 
   def inverse(y, x0): # x = f^-1(y)
       return newton.solve(y, x0)
-\end{lstlisting}
+  \end{lstlisting}
+\end{center}
 \vspace{10pt}
 где\\ 
 функция cdf - программная запись, найденной ранее функции распределения (3);\\
@@ -302,9 +308,10 @@ $X_0$ - начальное значение ($0 \leq X_0 < m$).\\
 
 \paragraph{Реализация ЛКМ}\vspace{-20pt}\rule{\linewidth}{0.1mm}
 
-Реализуем линейный конгруэнтный метод (7), используя параметры (8):\\
+Реализуем линейный конгруэнтный метод (7), используя параметры (8):
 
-\begin{lstlisting}[language=Python, caption={Реализация ЛКМ}, label={lst:LCG}]
+\begin{center}
+  \begin{lstlisting}[language=Python, caption={Реализация ЛКМ}, label={lst:LCG}]
 class LCG:
   def __init__(self, 
                seed, a=561860773102413563, c=0, m=2**60-93):
@@ -317,18 +324,21 @@ class LCG:
   def next(self):
       self.state = (self.a * self.state + self.c) % self.m
       return self.state / self.m # Normalize to [0, 1)
-\end{lstlisting}
+  \end{lstlisting}
+\end{center}
 
 \paragraph{Моделирование выборки}\vspace{-20pt}\rule{\linewidth}{0.1mm}
 
 Наконец смоделируем 120 случайных величин в виде вектора линейным конгруэнтным методом:\\
-\begin{lstlisting}[language=Python]
+\begin{center}
+  \begin{lstlisting}[language=Python]
 n = 120
 lcg = LCG(seed=340751464)
 
 data = [lcg.next() for _ in range(n)]
 print(data)
-\end{lstlisting}
+  \end{lstlisting}
+\end{center}
 \vspace{10pt}
 Начальное значение (seed) в ЛКМ выбирается так, чтобы $x_0 \neq 0$. Это необходимо для того, чтобы 
 последовательность была полной длины, т.е. имела максимальную периодичность 
@@ -366,7 +376,8 @@ print(data)
 
 Итого имеем:
 
-\begin{lstlisting}[language=Python]
+\begin{center}
+  \begin{lstlisting}[language=Python]
 guesses = [0, 3, 6, 9, 12, 15, 18, 21]
 for ind, el in enumerate(data):
     for attempt, guess in enumerate(guesses):
@@ -379,7 +390,8 @@ for ind, el in enumerate(data):
 
         if attempt == len(guesses) - 1:
             raise Exception('Solution was not found')
-\end{lstlisting}
+  \end{lstlisting}
+\end{center}
 
 \noindent
 \begin{adjustbox}{max width=1\textwidth}
@@ -413,13 +425,15 @@ for ind, el in enumerate(data):
 
 \vspace{10pt}
 
-\begin{lstlisting}[language=Python]
+\begin{center}
+  \begin{lstlisting}[language=Python]
 mini, maxi = min(data), max(data)
 print(mini, maxi)
 
 range_ = maxi - mini
 print(range_)
-\end{lstlisting}
+  \end{lstlisting}
+\end{center}
 
 \vspace{-5pt}
 
@@ -447,11 +461,13 @@ $\lfloor x \rfloor$ — обозначает целую часть числа $x
 
 \vspace{10pt}
 
-\begin{lstlisting}[language=Python]
+\begin{center}
+  \begin{lstlisting}[language=Python]
 trunc = lambda x : int(str(x)[:str(x).index('.')])
 k = 1 + trunc(np.log2(n))
 h = range_ / k
-\end{lstlisting}
+  \end{lstlisting}
+\end{center}
 
 \vspace{-5pt}
 
@@ -464,7 +480,8 @@ h = range_ / k
 
 \vspace{10pt}
 
-\begin{lstlisting}[language=Python]
+\begin{center}
+  \begin{lstlisting}[language=Python]
 grouped_data = []
 
 begin = mini
@@ -489,7 +506,8 @@ for i in range(k):
     grouped_data.append(grouped_element)
 
     begin = end
-\end{lstlisting}
+  \end{lstlisting}
+\end{center}
 \vspace{10pt}
 Полученную группировку представим в виде таблицы:
 \vspace{10pt}
@@ -529,10 +547,12 @@ for i in range(k):
 По оси абсцисс для гистограммы укажем середины интервалов, \\
 по оси ординат - вектор относительных частот, разделенный на шаг интервала: \\
 
-\begin{lstlisting}[language=Python]
+\begin{center}
+  \begin{lstlisting}[language=Python]
 x_axis = [el['middle']                 for el in grouped_data]
 y_axis = [el['relative frequency'] / h for el in grouped_data]
-\end{lstlisting}
+  \end{lstlisting}
+\end{center}
 
 \begin{align*}
   & \text{int}: [ 3.6258 \hspace{10pt} 6.6718  \hspace{10pt} 9.7177 \hspace{10pt} 12.7637 \hspace{10pt} 15.8096 \hspace{10pt} 18.8556 \hspace{10pt} 21.9016] \\
@@ -541,7 +561,8 @@ y_axis = [el['relative frequency'] / h for el in grouped_data]
 
 Для построения графиков воспользуемся библиотекой \high{matplotlib}. \\
 
-\begin{lstlisting}[language=Python]
+\begin{center}
+  \begin{lstlisting}[language=Python]
 import matplotlib.pyplot as plt
 
 def pdf(x):
@@ -562,9 +583,17 @@ def buildBar(x, y):
   plt.show()
 
 buildBar(x_axis, y_axis)
-\end{lstlisting}
+  \end{lstlisting}
+\end{center}
 
+{\footnotesize \textbf{Примечание:} код был несколько упрощен, чтобы не загромождать текст, 
+полный код см. в приложении.}
+
+\vfill
 \includegraphics[width=1\textwidth]{histXpdf}
+\vfill
+
+\newpage
 
 \subsection{Часть 3}\vspace{-20pt}\rule{\linewidth}{0.1mm}
 
@@ -604,19 +633,20 @@ $\cfrac{b - a}{N}$, и суммируем их площади.\\
 
 \vspace{10pt}
 
-\begin{lstlisting}[language=Python]
+\begin{center}
+  \begin{lstlisting}[language=Python]
 def next_in_range(self, a, b):
   return a + (b - a) * self.next()
-\end{lstlisting}
+  \end{lstlisting}
+\end{center}
 
 \vspace{10pt}
 
 Теперь реализуем интегрирование методом Монте-Карло, используя  
 описаннный ЛКМ:\\
 
-\newpage
-
-\begin{lstlisting}[language=Python, caption={Реализация метода Монте-Карло}, label={lst:MonteCarlo}]
+\begin{center}
+  \begin{lstlisting}[language=Python, caption={Реализация метода Монте-Карло}, label={lst:MonteCarlo}]
 class MonteCarlo:
   def __init__(self, N, PRNG_object):
       self.N = int(N)
@@ -633,7 +663,8 @@ class MonteCarlo:
           generatedValues.append(randomFuncVal)
       
       return mult * sum(generatedValues)
-\end{lstlisting}
+  \end{lstlisting}
+\end{center}
 
 \paragraph{Реализация численного нахождения математического ожидания}\vspace{-20pt}\rule{\linewidth}{0.1mm}
 
@@ -685,24 +716,24 @@ $u_{i} = (561860773102413563 \cdot u_{i-1})\hspace{3pt} \text{mod}
 N отвечает за точность полученной оценки метода, так 
 что чем оно больше, тем лучше.\\
 
-\begin{lstlisting}[language=Python]
+\begin{center}
+  \begin{lstlisting}[language=Python]
 monteCarlo = MonteCarlo(1e7, lcg)
 
 def subs(t):
     return np.tan(t) * pdf(np.tan(t)) * (1 / np.cos(t)**2) 
 
 ExpectedValue = monteCarlo.integrate(subs, 0, np.pi/2)
-\end{lstlisting}
+  \end{lstlisting}
+\end{center}
 \vspace{10pt}
 где классы \textbf{LCG} и \textbf{MonteCarlo} представлены в листингах 
-\ref{lst:LCG} и \ref{lst:MonteCarlo} соответственно.
+\ref{lst:LCG} и \ref{lst:MonteCarlo} соответственно.\\
 
 Итого получаем:
-\begin{equation}
+\begin{equation*}
   \mathbb{E}[X] \approx 8.16
-\end{equation}
-
-\newpage
+\end{equation*}
 
 \paragraph{Дисперсия}\vspace{-20pt}\rule{\linewidth}{0.1mm}
 
@@ -711,32 +742,543 @@ ExpectedValue = monteCarlo.integrate(subs, 0, np.pi/2)
   \text{D}[X] = \mathbb{E}[X^2] - (\mathbb{E}[X])^2
 \end{equation*}
 
-\begin{lstlisting}[language=Python]
+\begin{center}
+  \begin{lstlisting}[language=Python]
 def subs2(t):
 return np.tan(t)**2 * pdf(np.tan(t)) * (1 / np.cos(t)**2) 
 
 Var = monteCarlo.integrate(subs2, 0, np.pi/2) - \
   monteCarlo.integrate(subs, 0, np.pi/2)**2
-\end{lstlisting}
+  \end{lstlisting}
+\end{center}
 \vspace{10pt}
 Итого получаем:
-\begin{equation}
+\begin{equation*}
   \text{D}[X] \approx 14.65
-\end{equation}
+\end{equation*}
 
-% \paragraph{Дисперсия}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+\paragraph{Выборочное среднее}\vspace{-20pt}\rule{\linewidth}{0.1mm}
 
-% Аналогично найдем дисперсию:
-% \begin{equation}
-%   \text{D}[X] = (e^{\sigma^2} - 1) e^{[2 \mu + \sigma^2]} = (e^{2} - 1) e^{6} \approx 
-% \end{equation}
+\begin{equation*}
+  \overline{X} = \cfrac{1}{n} \sum_{k=1}^{n} X_k 
+\end{equation*}
 
-% \begin{align*}
-%   & \text{Выборочное среднее}      &=\hspace{10pt}& \overline{X}  &=\hspace{10pt} & \cfrac{1}{n} \cdot \sum_{k=0}^{n} X_k                          &=\hspace{10pt} &  \\ 
-%   & \text{Выборочная дисперсия}    &=\hspace{10pt}& S^2           &=\hspace{10pt} & \cfrac{1}{n - 1} \cdot \sum_{k=0}^{n} (X_k - m \mu)^2          &=\hspace{10pt} &  \\ 
-%   & \text{Математическое ожидание} &=\hspace{10pt}& \mathbb{E}[X] &=\hspace{10pt} & \sum_{i=0}^{n} \left(i \cdot P_i \right)                       &=\hspace{10pt} &  \\ 
-%   & \text{Дисперсия}               &=\hspace{10pt}& \text{D}[X]   &=\hspace{10pt} & \sum_{i=0}^{n} \left[ \left( i - m \right)^2 \cdot P_i \right] &=\hspace{10pt} &  
-% \end{align*}
+\begin{center}
+  \begin{lstlisting}[language=Python]
+OverlineX = sum(data)/n
+  \end{lstlisting}
+\end{center}
+\vspace{10pt}
+Итого получаем:
+\begin{equation*}
+  \overline{X} \approx 7.88
+\end{equation*}
+
+\paragraph{Выборочная дисперсия}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+\begin{equation*}
+  S^2 = \cfrac{1}{n-1} \sum_{k=1}^{n} \left( X_k - \overline{X} \right)^2
+\end{equation*}
+
+\begin{center}
+  \begin{lstlisting}[language=Python]
+S2 = 1 / (n - 1) * sum([(x - OverlineX)**2 for x in data])
+  \end{lstlisting}
+\end{center}
+\vspace{10pt}
+Итого получаем:
+\begin{equation*}
+  S^2 \approx 15.36
+\end{equation*}
+
+\paragraph{Сравнение}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+\begin{equation*}
+  \left| \mathbb{E}[X] - \overline{X} \right| \hspace{100pt}
+  \sqrt{\cfrac{\text{D}[X]}{S^2}}
+\end{equation*}
+
+\begin{center}
+  \begin{lstlisting}[language=Python]
+diff1 = abs(ExpectedValue - OverlineX)
+diff2 = np.sqrt(Var/S2)
+  \end{lstlisting}
+\end{center}
+\vspace{10pt}
+
+Итого имеем:
+\begin{alignat*}{6}
+  & \mathbb{E}[X] &&= 8.16 &\hspace{50pt} \overline{X} &&= 15.36 &\hspace{50pt} \left| \mathbb{E}[X] - \overline{X} \right| &&= 0.2792 \\
+  & \text{D}[X] &&= 14.65 &\hspace{50pt} S^2 &&= 15.36 &\hspace{50pt} \sqrt{\frac{\text{D}[X]}{S^2}} &&= 0.9768
+\end{alignat*}
+
+Поскольку абсолютная величина разности математического ожидания 
+и выборочного среднего мала, а отношение выборочной 
+дисперсии к ее теоретическому значению близко к единице, то 
+результаты моделирования можно признать удовлетворительными.
+
+\subsection{Часть 4}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Используя неравенство \high{Dvoretzky-Kiefer-Wolfowitz}, 
+постройте 90\% доверительный интервал для функции распределения $F(x)$.
+
+\paragraph{Неравенство Dvoretzky-Kiefer-Wolfowitz}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+\begin{equation*}
+  P \left( \sup_{x \in \mathbb{R}} \left| \hat{F}_n(x) - F(x) \right| > \varepsilon \right) 
+  \leq 2 e^{-2 n \varepsilon^2}
+\end{equation*}
+
+Таким образом, если $2 e^{-2 n \varepsilon^2} = \alpha$, $\ln(\frac{2}{\alpha}) = 
+2 n \varepsilon^2$, $\varepsilon = \sqrt{\frac{1}{2 n} \ln(\frac{2}{\alpha})}$, то 
+с вероятностью $1 - \alpha$
+\begin{equation*}
+  L(x) \leq \hat{F}_n(x) \leq R(x),
+\end{equation*}
+где
+\begin{equation*}
+  L(x) = \max \left\{ \hat{F}_n (x) - \sqrt{\frac{1}{2 n} \ln\left(\frac{2}{\alpha}\right)}, 0 \right\} 
+  \hspace{40pt} 
+  R(x) = \min \left\{ \hat{F}_n (x) + \sqrt{\frac{1}{2 n} \ln\left(\frac{2}{\alpha}\right)}, 1 \right\}
+\end{equation*}
+
+\paragraph{Реализация функций}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Так как требуется построить 90\% доверительный интервал, $\alpha$ возьмем равной 0.1.\\
+
+\begin{center}
+  \begin{lstlisting}[language=Python]
+def Fempir(x):
+  ind = lambda x : 1 if x > 0 else 0
+
+  return sum([ind(x - X)/n for X in data])
+
+alpha = 0.1
+epsilon = np.sqrt(1/(2*n) * np.log(2/alpha))
+
+def L(x):
+  return max(Fempir(x) - epsilon, 0)
+
+def R(x):
+  return min(Fempir(x) + epsilon, 1)
+  \end{lstlisting}
+\end{center}
+\vspace{10pt}
+
+\paragraph{Графическая иллюстрация}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Построим доверительный интервал уровня 0.9 для функции распределения на 
+основе неравенства Дворецкого - Кифера - Волфовица.\\
+
+\begin{center}
+  \begin{lstlisting}[language=Python]
+def buildPlots():
+  x_values = np.linspace(0.01, trunc(maxi) + 1, 1000)
+
+  # empir
+  empir_y_values = [Fempir(x) for x in x_values]
+  plt.plot(x_values, empir_y_values)
+
+  # theoretical
+  cdf_y_values = [cdf(x) for x in x_values]
+  plt.plot(x_values, cdf_y_values)
+
+  # L
+  L_y_values = [L(x) for x in x_values]
+  plt.plot(x_values, L_y_values)
+
+  # R
+  R_y_values = [R(x) for x in x_values]
+  plt.plot(x_values, R_y_values)
+
+  # Show the plot
+  plt.show()
+  \end{lstlisting}
+\end{center}
+\vspace{10pt}
+
+{\footnotesize \textbf{Примечание:} код был несколько упрощен, чтобы не загромождать текст, 
+полный код см. в приложении.}
+
+\vspace{30pt}
+
+\includegraphics[width=1\textwidth]{Dvoretzky-Kiefer-Wolfowitz}
+
+\newpage
+
+\section{Вывод}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+В ходе проделанной лабораторной работы было проведено моделирование выборки из 
+логнормального распределения методом обратных функций, реализованы такие численные 
+методы, как метод Ньютона, метод центральных разностей и метод Монте-Карло. Был реализован 
+алгоритм генерации псевдослучайных чисел. На основе значений выборочного среднего и 
+выборочной дисперсии был сделан вывод о степени качества моделирования. Также был 
+построен доверительный интервал на основе неравенства Дворецкого - Кифера - Вольфовица.
+
+% ---------------------------------------CODE---------------------------------------
+
+\section{Приложение}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+\begin{center}
+  \begin{lstlisting}[language=Python]
+import warnings
+warnings.filterwarnings("ignore", category=RuntimeWarning)
+
+
+class CDM:
+    def __init__(self, h):
+        self.h = h
+    
+    def diff(self, f, x):
+        numerator = f(x + self.h) - f(x - self.h)
+        denominator = 2 * self.h
+
+        return numerator / denominator
+
+
+class Newton:
+    def __init__(self, f, CDM_object, tol=1e-6, max_iter=1000):
+        self.f = f
+        self.CDM = CDM_object
+        self.tol = tol 
+        self.max_iter = max_iter
+
+    def solve(self, y, x0):
+        x = x0
+        for _ in range(self.max_iter):
+            f_x = self.f(x) - y
+            f_prime_x = self.CDM.diff(self.f, x)
+            if abs(f_prime_x) < 1e-10:
+                raise ValueError("Derivative is zero, method fails.")
+            x_new = x - f_x / f_prime_x
+            if abs(x_new - x) < self.tol:
+                return x_new
+            x = x_new
+
+        raise ValueError(f"Method did not converge.({x_new})")
+
+
+class LCG:
+    def __init__(self, seed, a=561860773102413563, c=0, m=2**60-93):
+        self.seed = seed
+        self.a = a
+        self.c = c
+        self.m = m
+        self.state = seed
+
+    def next(self):
+        self.state = (self.a * self.state + self.c) % self.m
+        return self.state / self.m  # Normalize to [0, 1)
+    
+    def next_in_range(self, a, b):
+        return a + (b - a) * self.next()
+
+
+class MonteCarlo:
+    def __init__(self, N, PRNG_object):
+        self.N = int(N)
+        self.PRNG = PRNG_object
+    
+    def integrate(self, f, a, b):
+        mult = (b - a) / self.N
+        
+        generatedValues = []
+        for _ in range(self.N):
+            randomArg = self.PRNG.next_in_range(a, b)
+            randomFuncVal = f(randomArg)
+
+            generatedValues.append(randomFuncVal)
+        
+        return mult * sum(generatedValues)
+
+  
+import scipy.special
+import numpy as np
+
+
+if __name__ == '__main__':
+
+    # --------------------------PART1--------------------------
+
+    def cdf(x): # F_X
+        return float(1/2 + 1/2 * \
+            scipy.special.erf((np.log(x) - 2)/(np.sqrt(0.4))))
+
+    cdm    = CDM(h=1e-6)
+    newton = Newton(cdf, cdm, tol=1e-6, max_iter=1000)
+
+    def inverse(y, x0): # x = f^-1(y)
+        return newton.solve(y, x0)
+
+    n = 120
+
+    lcg = LCG(seed=340751464)
+
+    # --------------------------PART2--------------------------
+
+    data = [lcg.next() for _ in range(n)]
+    # print(f'Y: {data}')
+
+    guesses = [0, 3, 6, 9, 12, 15, 18, 21]
+    for ind, el in enumerate(data):
+        for attempt, guess in enumerate(guesses):
+            try: 
+                inv_value = inverse(el, guess)
+                data[ind] = inv_value
+                break
+            except:
+                pass
+
+            if attempt == len(guesses) - 1:
+                raise Exception('Solution was not found')
+    
+    # print(f'X: {data}')
+
+    # --------------------------PART3--------------------------
+
+    mini, maxi = min(data), max(data)
+    # print(f'min: {mini}, max: {maxi}')
+
+    range_ = maxi - mini
+    # print(f'range: {range_}')
+
+    # --------------------------PART4--------------------------
+
+    trunc = lambda x : int(str(x)[:str(x).index('.')])
+
+    k = 1 + trunc(np.log2(n))
+    # print(f'k: {k}')
+    
+    h = range_ / k
+    # print(f'h: {h}')
+
+    # --------------------------PART5--------------------------
+
+    grouped_data = []
+
+    begin = mini
+    for i in range(k):
+        end = begin + h
+
+        middle = (begin + end) / 2
+        freq = sum(begin <= el < end for el in data)
+        
+        if i == k - 1:
+            freq += 1
+
+        relative_freq = freq / n
+
+        grouped_element = {
+            'interval numero': i,
+            'interval': f'[{np.round(begin, 4)}, {np.round(end, 4)})',
+            'middle': np.round(middle, 4),
+            'frequency': freq,
+            'relative frequency': relative_freq
+        }
+        grouped_data.append(grouped_element)
+
+        begin = end
+
+    # for element in grouped_data:
+    #     print(element['interval numero'], 
+    #           element['interval'], 
+    #           element['middle'], 
+    #           element['frequency'], 
+    #           element['relative frequency'])
+
+    # --------------------------PART6--------------------------
+
+    import matplotlib.pyplot as plt
+
+    def pdf(x):
+        return 1 / (np.sqrt(0.4 * np.pi) * x) \
+            * np.exp(-(np.log(x) - 2)**2 / 0.4)
+
+    def buildBar(x, y):
+        # Define colors
+        RED   = '#6F1D1B'
+
+        # Define font sizes
+        SIZE_TICKS   = 10
+
+        # Create the figure and axis
+        _, ax = plt.subplots(figsize=(10, 6))
+
+        # histogtamm
+        ax.bar(x, y, width=3.05, color='none', 
+                                 edgecolor='black', 
+                                 linewidth=1.5)
+
+        # pdf
+        x_values = np.linspace(0.01, trunc(maxi) + 1, 1000)
+        y_values = pdf(x_values)
+        ax.plot(x_values, y_values, color=RED, 
+                                    linestyle='-', 
+                                    linewidth=1.5)
+
+        # axis names
+        ax.set_xlabel('int')
+        ax.set_ylabel('$\\frac{p_k}{h}$', fontsize=20)
+
+        # ticks settings
+        xticks = [i for i in range(0, trunc(maxi) + 2, 3)]
+        ax.set_xticks(xticks)
+
+        # Adjust the font size of the tick labels
+        ax.tick_params(axis='both', which='major', 
+                                    labelsize=SIZE_TICKS)
+
+        # Update font settings
+        plt.rcParams.update({'font.family': 'serif', 
+                             'font.size': 12})
+
+        # Adjust layout
+        plt.tight_layout()
+
+        # Save the figure
+        plt.savefig('histXpdf.png', dpi=300, transparent=True)
+
+        # Show the plot
+        plt.show()
+
+    x_axis = [el['middle']                 for el in grouped_data]
+    y_axis = [el['relative frequency'] / h for el in grouped_data]
+
+    # print(f'x: {np.round(x_axis, 4)}')
+    # print(f'y: {np.round(y_axis, 4)}')
+
+    # buildBar(x_axis, y_axis)
+
+    # --------------------------PART7--------------------------
+
+    monteCarlo = MonteCarlo(1e7, lcg)
+
+    def subs(t):
+        return np.tan(t) * pdf(np.tan(t)) * (1 / np.cos(t)**2) 
+
+    ExpectedValue = monteCarlo.integrate(subs, 0, np.pi/2)
+    
+    # print(ExpectedValue)
+
+    # --------------------------PART8--------------------------
+
+    def subs2(t):
+        return np.tan(t)**2 * pdf(np.tan(t)) * (1 / np.cos(t)**2) 
+
+    Var = monteCarlo.integrate(subs2, 0, np.pi/2) - \
+          monteCarlo.integrate(subs, 0, np.pi/2)**2
+    
+    # print(Var)
+
+    # --------------------------PART9--------------------------
+
+    OverlineX = sum(data)/n
+
+    # print(f'OverlineX: {OverlineX}')
+
+    S2 = 1 / (n - 1) * sum([(x - OverlineX)**2 for x in data])
+
+    # print(f'S2: {S2}')
+
+    # --------------------------PART10--------------------------
+
+    diff1 = abs(ExpectedValue - OverlineX)
+    diff2 = np.sqrt(Var/S2)
+
+    # print(diff1)
+    # print(diff2)
+
+    # --------------------------PART11--------------------------
+
+    def Fempir(x):
+        ind = lambda x : 1 if x > 0 else 0
+
+        return sum([ind(x - X)/n for X in data])
+
+    alpha = 0.1
+    epsilon = np.sqrt(1/(2*n) * np.log(2/alpha))
+
+    def L(x):
+        return max(Fempir(x) - epsilon, 0)
+    
+    def R(x):
+        return min(Fempir(x) + epsilon, 1)
+    
+    # --------------------------PART12--------------------------
+
+    def buildPlots():
+        # Define colors
+        RED    = '#6F1D1B'
+        BLUE   = '#12EAEA'
+        GREEN  = '#2E5339'
+        PURPLE = '#8D80AD'
+
+        # Define font sizes
+        SIZE_TICKS   = 10
+
+        # Create the figure and axis
+        _, ax = plt.subplots(figsize=(10, 6))  # Adjust the figure size as needed
+
+        x_values = np.linspace(0.01, trunc(maxi) + 1, 1000)
+
+        # empir
+        empir_y_values = [Fempir(x) for x in x_values]
+        ax.plot(x_values, empir_y_values, color=RED, 
+                                          linestyle='-', 
+                                          linewidth=1.5, 
+                                          label='Fempir(x)')
+
+        # theoretical
+        cdf_y_values = [cdf(x) for x in x_values]
+        ax.plot(x_values, cdf_y_values, color=BLUE, 
+                                          linestyle='-', 
+                                          linewidth=1.5, 
+                                          label='Theoretical(x)')
+
+        # L
+        L_y_values = [L(x) for x in x_values]
+        ax.plot(x_values, L_y_values, color=GREEN, 
+                                          linestyle='-', 
+                                          linewidth=1.5, 
+                                          label='L(x)')
+
+        # R
+        R_y_values = [R(x) for x in x_values]
+        ax.plot(x_values, R_y_values, color=PURPLE, 
+                                          linestyle='-', 
+                                          linewidth=1.5, 
+                                          label='R(x)')
+
+        # axis names
+        ax.set_xlabel('x')
+
+        # ticks settings
+        xticks = [i for i in range(0, trunc(maxi) + 2, 3)]
+        ax.set_xticks(xticks)
+
+        # Adjust the font size of the tick labels
+        ax.tick_params(axis='both', which='major', 
+                                    labelsize=SIZE_TICKS)
+
+        plt.legend(fontsize=10, loc='best')
+
+        # Update font settings
+        plt.rcParams.update({'font.family': 'serif', 
+                             'font.size': 12})
+
+        # Adjust layout
+        plt.tight_layout()
+
+        # Save the figure
+        plt.savefig('Dvoretzky-Kiefer-Wolfowitz.png', 
+                    dpi=300, transparent=True)
+
+        # Show the plot
+        plt.show()
+
+    buildPlots()
+  \end{lstlisting}
+\end{center}
 
 % ------------------------------------LITERATURE------------------------------------
 
