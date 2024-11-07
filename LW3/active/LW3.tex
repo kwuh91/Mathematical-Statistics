@@ -324,7 +324,7 @@ class LCG:
 Наконец смоделируем 120 случайных величин в виде вектора линейным конгруэнтным методом:\\
 \begin{lstlisting}[language=Python]
 n = 120
-lcg = LCG(seed=42)
+lcg = LCG(seed=340751464)
 
 data = [lcg.next() for _ in range(n)]
 print(data)
@@ -341,10 +341,10 @@ print(data)
     \begin{gather*}
       Y = [ \\
       \begin{aligned}
-        & 0.4681345399559361,  & \hspace{3pt} & 0.28877877653947137, & \hspace{3pt} & 0.7967245668609647,  & \hspace{3pt} & 0.36660207712361836, & \\
-        & 0.39916205448514674, & \hspace{3pt} & 0.06733862417721515, & \hspace{3pt} & 0.4490674222045938,  & \hspace{3pt} & 0.5437707128785809,  & \\
-        & 0.44328418118099794, & \hspace{3pt} & 0.10138307777823315, & \hspace{3pt} & 0.33969527114335946, & \hspace{3pt} & 0.05922435108111392, & \\
-        & 0.7992621310298111,  & \hspace{3pt} & 0.4096856372108328,  & \hspace{3pt} & 0.9369160399669172,  & \hspace{3pt} & 0.63015184507485,    & \\  
+        & 0.32949885091783276, & \hspace{3pt} & 0.9732846125910063,  & \hspace{3pt} & 0.39434856188646605, & \hspace{3pt} & 0.8210789016402354,  & \\
+        & 0.20093003622010405, & \hspace{3pt} & 0.9707650441880256,  & \hspace{3pt} & 0.4178790819080603,  & \hspace{3pt} & 0.2974690498690837,  & \\
+        & 0.32632062605066997, & \hspace{3pt} & 0.8137561621450644,  & \hspace{3pt} & 0.6418089688930682,  & \hspace{3pt} & 0.72226998934102,    & \\
+        & 0.12543257092465954, & \hspace{3pt} & 0.39665152743167287, & \hspace{3pt} & 0.7205668938187388,  & \hspace{3pt} & 0.18456086494051507, & \\ 
       \end{aligned} \\
       ...\\
       ]
@@ -387,10 +387,10 @@ for ind, el in enumerate(data):
     \begin{gather*}
       X = [ \\
       \begin{aligned}
-        & 7.129497868653516,  & \hspace{3pt} & 5.75990939608953,  & \hspace{3pt} & 10.709998315639028, & \hspace{3pt} & 6.344319895512703, & \\
-        & 6.591160899999072,  & \hspace{3pt} & 3.784860187755976, & \hspace{3pt} & 6.977904630768007,  & \hspace{3pt} & 7.761423453312197, & \\
-        & 6.932399313501684,  & \hspace{3pt} & 4.180285314129899, & \hspace{3pt} & 6.14211341489262,   & \hspace{3pt} & 3.6757503707970156,& \\ 
-        & 10.753239775187453, & \hspace{3pt} & 6.671716126948868, & \hspace{3pt} & 14.643019921504544, & \hspace{3pt} & 8.572755366367943, & \\ 
+        & 6.065674809818662, & \hspace{3pt} & 17.52728100897831,  & \hspace{3pt} & 6.5544583429545265, & \hspace{3pt} & 11.147396579310449, & \\ 
+        & 5.078922433676263, & \hspace{3pt} & 17.222193164730466, & \hspace{3pt} & 6.734763210632847,  & \hspace{3pt} & 5.825351333431677,  & \\
+        & 6.041854304433931, & \hspace{3pt} & 11.010347184551701, & \hspace{3pt} & 8.692598700648851,  & \hspace{3pt} & 9.618384853081634,  & \\
+        & 4.421534190647852, & \hspace{3pt} & 6.572007701239677,  & \hspace{3pt} & 9.596593105982482,  & \hspace{3pt} & 4.944860000874664,  & \\
       \end{aligned} \\
       ...\\
       ]
@@ -424,8 +424,8 @@ print(range_)
 \vspace{-5pt}
 
 \begin{align*}
-  & \text{Крайние члены: }  3.1658, \hspace{5pt} 36.3487 \\
-  & \text{Размах выборки: }  33.1829
+  & \text{Крайние члены: }  2.1028, \hspace{5pt} 23.4245 \\
+  & \text{Размах выборки: }  21.3217
 \end{align*}
 
 {\footnotesize \textbf{Примечание:} Выводимые данные округлены до 4х знаков для удобства чтения.}
@@ -457,7 +457,7 @@ h = range_ / k
 
 \begin{align*}
     & \text{Количество интервалов: } 7 \\
-    & \text{Шаг интервала: }  4.7404
+    & \text{Шаг интервала: }  3.046
 \end{align*}
 
 Теперь сгруппируем данные:
@@ -502,25 +502,241 @@ for i in range(k):
       номер     & \multirow{2}{*}{интервал} & середина  & \multirow{2}{*}{частота} & относительная \\
       интервала &                           & интервала &                          & частота       \\
       \hline
-      0 & [3.1658,  7.9062)  & 5.5360  & 69 & 0.575 \\ 
+      0 & [2.1028, 5.1488)   & 3.6258  & 30 & 0.25    \\
       \hline
-      1 & [7.9062,  12.6466) & 10.2764 & 36 & 0.3 \\ 
+      1 & [5.1488, 8.1947)   & 6.6718  & 46 & 0.3833  \\
       \hline
-      2 & [12.6466, 17.3870) & 15.0168 & 10 & 0.08333 \\ 
+      2 & [8.1947, 11.2407)  & 9.7177  & 24 & 0.2     \\
       \hline
-      3 & [17.3870, 22.1274) & 19.7572 & 3  & 0.025 \\ 
+      3 & [11.2407, 14.2867) & 12.7637 & 11 & 0.09167 \\
       \hline
-      4 & [22.1274, 26.8679) & 24.4977 & 1  & 0.00833 \\ 
+      4 & [14.2867, 17.3326) & 15.8096 & 6  & 0.05    \\
       \hline
-      5 & [26.8679, 31.6083) & 29.2381 & 0  & 0.0 \\ 
+      5 & [17.3326, 20.3786) & 18.8556 & 2  & 0.0167  \\
       \hline
-      6 & [31.6083, 36.3487) & 33.9785 & 1  & 0.00833 \\ 
+      6 & [20.3786, 23.4245) & 21.9016 & 1  & 0.00833 \\
       \hline
       \end{tabular}
   \end{adjustbox}
   \caption{Сгруппированные данные}
   \label{tab:your_table_label}
 \end{table}
+
+\paragraph{Гистограмма относительных частот}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Построим на одном рисунке графики теоретической плотности (1) и гистограмму относительных
+частот. \\
+По оси абсцисс для гистограммы укажем середины интервалов, \\
+по оси ординат - вектор относительных частот, разделенный на шаг интервала: \\
+
+\begin{lstlisting}[language=Python]
+x_axis = [el['middle']                 for el in grouped_data]
+y_axis = [el['relative frequency'] / h for el in grouped_data]
+\end{lstlisting}
+
+\begin{align*}
+  & \text{int}: [ 3.6258 \hspace{10pt} 6.6718  \hspace{10pt} 9.7177 \hspace{10pt} 12.7637 \hspace{10pt} 15.8096 \hspace{10pt} 18.8556 \hspace{10pt} 21.9016] \\
+  & \frac{\text{p}_k}{\text{h}}: [0.0821  \hspace{10pt} 0.1258  \hspace{10pt} 0.0657 \hspace{10pt} 0.0301  \hspace{10pt} 0.0164  \hspace{10pt} 0.0055  \hspace{10pt} 0.0027]
+\end{align*}
+
+Для построения графиков воспользуемся библиотекой \high{matplotlib}. \\
+
+\begin{lstlisting}[language=Python]
+import matplotlib.pyplot as plt
+
+def pdf(x):
+    return 1 / (np.sqrt(0.4 * np.pi) * x) \
+        * np.exp(-(np.log(x) - 2)**2 / 0.4)
+
+def buildBar(x, y):
+
+  # histogtamm 
+  plt.bar(x, y, color='white', edgecolor='black')
+
+  # pdf
+  x_values = np.linspace(0.01, trunc(maxi), 1000)
+  y_values = pdf(x_values)
+  plt.plot(x_values, y_values, color='red', linestyle='-', 
+                                            linewidth=1.5)
+
+  plt.show()
+
+buildBar(x_axis, y_axis)
+\end{lstlisting}
+
+\includegraphics[width=1\textwidth]{histXpdf}
+
+\subsection{Часть 3}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Вычислите выборочное среднее и выборочную дисперсию и сравните с 
+истинными значениями этих характеристик.
+
+\subsubsection{Эмпирические и теоретические характеристики}
+
+\paragraph{Математическое ожидание}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Запишем формулу для математического ожидания:
+\begin{equation}
+  \mathbb{E}[X] = \int_{-\infty}^{\infty} x f_X (x) dx, \qquad \text{где}
+\end{equation}
+$f_X (x)$ - плотность распределения.\\ 
+
+\paragraph{Метод интегрирования Монте-Карло}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Для вычисления интеграла воспользуемся численным методом интегрирования Монте-Карло
+\begin{equation}
+  \int_{a}^{b} f(x) dx \approx \cfrac{b-a}{N} \sum_{i=1}^{N} f(u_i), \quad \text{где}
+\end{equation}
+$u$ - равномерно распредленная на отрезке интегрирования $[a, b]$ случайная величина.\\
+
+Геометрическая интерпретация данного метода похожа на известный детерминистический метод, 
+с той разницей, что вместо равномерного разделения области интегрирования на маленькие интервалы 
+и суммирования площадей получившихся «столбиков» мы забрасываем область интегрирования случайными 
+точками, на каждой из которых строим такой же «столбик», определяя его ширину как 
+$\cfrac{b - a}{N}$, и суммируем их площади.\\
+
+Точность оценки данного метода зависит только от количества точек $N$.\\
+
+\paragraph{Реализация метода Монте-Карло}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Так как данный метод опирается на генерацию случайных чисел на промежутке, расширим 
+функционал нашей реализации ЛКМ (листинг \ref{lst:LCG}) и добавим следующий метод:
+
+\vspace{10pt}
+
+\begin{lstlisting}[language=Python]
+def next_in_range(self, a, b):
+  return a + (b - a) * self.next()
+\end{lstlisting}
+
+\vspace{10pt}
+
+Теперь реализуем интегрирование методом Монте-Карло, используя  
+описаннный ЛКМ:\\
+
+\newpage
+
+\begin{lstlisting}[language=Python, caption={Реализация метода Монте-Карло}, label={lst:MonteCarlo}]
+class MonteCarlo:
+  def __init__(self, N, PRNG_object):
+      self.N = int(N)
+      self.PRNG = PRNG_object
+  
+  def integrate(self, f, a, b):
+      mult = (b - a) / self.N
+      
+      generatedValues = []
+      for _ in range(self.N):
+          randomArg = self.PRNG.next_in_range(a, b)
+          randomFuncVal = f(randomArg)
+
+          generatedValues.append(randomFuncVal)
+      
+      return mult * sum(generatedValues)
+\end{lstlisting}
+
+\paragraph{Реализация численного нахождения математического ожидания}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Прежде чем реализовывать вычисление самого интеграла, заметим, что в пределах 
+интегрирования (9) присутствует бесконечность, что затрудняет интегрирование 
+методом Монте-Карло (10). \\
+Воспользуемся заменой, чтобы свести бесконечные пределы в конечные:
+\begin{gather*}
+  \mathbb{E}[X] = \int_{-\infty}^{+\infty} x f_X(t)dt = \\[1em]
+  = \left[\hspace{5pt}
+    \begin{gathered}
+    x       = \tan(t)                             \\
+    t       = \arctan(x)                          \\
+    dx      = \cfrac{1}{\cos^2(t)} dt             \\
+    -\infty : t=\arctan(-\infty)= -\cfrac{\pi}{2} \\ 
+    +\infty : t=\arctan(+\infty)= \cfrac{\pi}{2}  \\
+    \end{gathered}\,
+  \hspace{5pt}\right] = \\[1em]
+  = \int_{-\frac{\pi}{2}}^{\frac{\pi}{2}} \tan(t) \cdot f_X(\tan(t)) \cdot \cfrac{1}{\cos^2(t)} dt
+\end{gather*}
+
+Итого получим:
+\begin{equation}
+  \mathbb{E}[X] = \int_{-\frac{\pi}{2}}^{\frac{\pi}{2}} g(t) dt, 
+  \qquad g(t) = \tan(t) \cdot f_X(\tan(t)) \cdot \cfrac{1}{\cos^2(t)}
+\end{equation}
+
+Объединим теперь (11) и (10) и получим:
+\begin{equation}
+  \mathbb{E}[X] = \int_{-\infty}^{+\infty} x f_X(x)dx = 
+  \int_{-\frac{\pi}{2}}^{\frac{\pi}{2}} g(t) dt \approx 
+  \cfrac{\pi}{N} \sum_{i=1}^N g(u_i), \quad \text{где}
+\end{equation}
+$g(x) = \tan(x) \cdot f_X(\tan(x)) \cdot \cfrac{1}{\cos^2(x)}$, \\[1em]
+$u_i$ ищем в соответствии с (листинг \ref{lst:LCG}).\\
+
+Подставляя (1) в (12) и (8) в (7):
+\begin{gather*}
+  \mathbb{E}[X] = \int_{0}^{+\infty} x f_X(x)dx = 
+  \int_{0}^{\frac{\pi}{2}} \tan(t) f_X(\tan(t)) \cfrac{1}{\cos^2(t)} dt \approx \\[1em]
+  \approx \cfrac{\pi / 2}{N} \sum_{i=1}^{N} \left[ \tan(u_i) \cdot 
+  \cfrac{1}{\sqrt{0.4 \pi} \tan(u_i)} e^{-(\ln(\tan(u_i)) - 2)^2 /0.4}  
+  \cdot \cfrac{1}{\cos^2(u_i)} \right], \quad \text{где}
+\end{gather*}
+$u_{i} = (561860773102413563 \cdot u_{i-1})\hspace{3pt} \text{mod} 
+\hspace{3pt} 2^{60} - 93$ \\\\
+
+При программной реализации, как уже было сказано ранее, 
+N отвечает за точность полученной оценки метода, так 
+что чем оно больше, тем лучше.\\
+
+\begin{lstlisting}[language=Python]
+monteCarlo = MonteCarlo(1e7, lcg)
+
+def subs(t):
+    return np.tan(t) * pdf(np.tan(t)) * (1 / np.cos(t)**2) 
+
+ExpectedValue = monteCarlo.integrate(subs, 0, np.pi/2)
+\end{lstlisting}
+\vspace{10pt}
+где классы \textbf{LCG} и \textbf{MonteCarlo} представлены в листингах 
+\ref{lst:LCG} и \ref{lst:MonteCarlo} соответственно.
+
+Итого получаем:
+\begin{equation}
+  \mathbb{E}[X] \approx 8.16
+\end{equation}
+
+\newpage
+
+\paragraph{Дисперсия}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+Аналогично найдем дисперсию, как 
+\begin{equation*}
+  \text{D}[X] = \mathbb{E}[X^2] - (\mathbb{E}[X])^2
+\end{equation*}
+
+\begin{lstlisting}[language=Python]
+def subs2(t):
+return np.tan(t)**2 * pdf(np.tan(t)) * (1 / np.cos(t)**2) 
+
+Var = monteCarlo.integrate(subs2, 0, np.pi/2) - \
+  monteCarlo.integrate(subs, 0, np.pi/2)**2
+\end{lstlisting}
+\vspace{10pt}
+Итого получаем:
+\begin{equation}
+  \text{D}[X] \approx 14.65
+\end{equation}
+
+% \paragraph{Дисперсия}\vspace{-20pt}\rule{\linewidth}{0.1mm}
+
+% Аналогично найдем дисперсию:
+% \begin{equation}
+%   \text{D}[X] = (e^{\sigma^2} - 1) e^{[2 \mu + \sigma^2]} = (e^{2} - 1) e^{6} \approx 
+% \end{equation}
+
+% \begin{align*}
+%   & \text{Выборочное среднее}      &=\hspace{10pt}& \overline{X}  &=\hspace{10pt} & \cfrac{1}{n} \cdot \sum_{k=0}^{n} X_k                          &=\hspace{10pt} &  \\ 
+%   & \text{Выборочная дисперсия}    &=\hspace{10pt}& S^2           &=\hspace{10pt} & \cfrac{1}{n - 1} \cdot \sum_{k=0}^{n} (X_k - m \mu)^2          &=\hspace{10pt} &  \\ 
+%   & \text{Математическое ожидание} &=\hspace{10pt}& \mathbb{E}[X] &=\hspace{10pt} & \sum_{i=0}^{n} \left(i \cdot P_i \right)                       &=\hspace{10pt} &  \\ 
+%   & \text{Дисперсия}               &=\hspace{10pt}& \text{D}[X]   &=\hspace{10pt} & \sum_{i=0}^{n} \left[ \left( i - m \right)^2 \cdot P_i \right] &=\hspace{10pt} &  
+% \end{align*}
 
 % ------------------------------------LITERATURE------------------------------------
 
@@ -531,3 +747,28 @@ for i in range(k):
 \end{enumerate}
 
 \end{document}
+
+% Как известно, математическое ожидание логнормального распределения определяется следующей формулой:
+% \begin{equation}
+%   \mathbb{E}[X] = e^{[\mu + \sigma^2/2]}
+% \end{equation}
+
+% Для того чтобы определить параметры $\mu$ и $\sigma$, сравним найденную функцию распределения с 
+% общей формулой функции распределения для логнормального распределения.
+
+% \begin{equation*}
+%   F_X(x) = \cfrac{1}{2} + \cfrac{1}{2} \text{erf} \left( \cfrac{\ln(x) - \mu}{\sigma \sqrt{2}} \right)
+%   \qquad
+%   F_X(x) = \cfrac{1}{2} + \cfrac{1}{2} \text{erf} \left( \cfrac{\ln(x) - 2}{\sqrt{0.4}} \right)
+% \end{equation*}
+
+% Откуда можно заключить, что 
+% \begin{equation}
+%   \mu = 2 \qquad \sigma = \sqrt{2}
+% \end{equation}
+
+% Подставив (10) в (9), получим:
+
+% \begin{equation}
+%   \mathbb{E}[X] = e^3 \approx 20.0855
+% \end{equation}
