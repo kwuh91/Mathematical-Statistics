@@ -1,0 +1,133 @@
+\documentclass[a4paper, 14pt]{extarticle}
+
+\usepackage{../latexDependencies/misc/preamble2}
+
+\geometry{a4paper}
+
+% Название дисциплины
+\newcommand{\subject}{Теория вероятности и математическая статистика} 
+
+% Тип работы
+% lab - для лабораторной работы 
+% hw  - для домашней     работы
+\newcommand{\task}{lab} 
+
+% Номер работы
+\newcommand{\taskNumber}{7} 
+
+% Название работы
+\newcommand{\taskNameOne}{???} 
+\newcommand{\taskNameTwo}{???} 
+
+% Имя студента
+\newcommand{\studentName}{Очкин Н.В.}
+
+% Имя преподававателя
+\newcommand{\teacherName}{Облакова Т.В.}
+
+% Группа
+\newcommand{\group}{ФН11-52Б}
+
+% Вариант
+\newcommand{\variant}{9}
+
+\begin{document}
+
+\graphicspath{ {../latexDependencies/images} } 
+\input{../latexDependencies/frontmatter/titlepage2}
+
+\newgeometry{left=25mm, right=25mm, top=20mm, bottom=20mm}
+
+\graphicspath{ {../latexDependencies/images/LW7} }
+
+% Customize section, subsection, subsubsection and paragraph styles
+\titleformat{\section}
+  {\normalfont\large\bfseries}{\thesection}{1em}{}
+
+\titleformat{\subsection}
+  {\normalfont\normalsize\bfseries}{\thesubsection}{1em}{}
+
+\titleformat{\subsubsection}
+  {\normalfont\small\bfseries}{\thesubsubsection}{1em}{}
+
+\titleformat{\paragraph}
+  {\small\small\bfseries}{\theparagraph}{1em}{}
+
+\thispagestyle{empty}
+
+\null\newpage
+
+% \setcounter{tocdepth}{5}
+% \setcounter{secnumdepth}{5}
+
+% \pagenumbering{roman}
+
+% \tableofcontents
+% \newpage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\setstretch{1}
+\linespread{1.1}
+
+\setlength{\parindent}{0pt}
+
+\fontsize{12pt}{16pt}\selectfont
+
+\definecolor{myblue}{HTML}{0A88C2}
+\definecolor{myred}{HTML}{FF1B1C}
+\definecolor{mygreen}{HTML}{386641}
+
+\lstdefinestyle{mystyle}{
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{myblue},
+    stringstyle=\color{myred},
+    commentstyle=\color{green!50!black},
+    showstringspaces=false,
+    frame=leftline, 
+    framesep=10pt, 
+}
+
+% Set the style for Python code
+\lstset{style=mystyle, extendedchars=\true}
+
+% --------------------------------------START--------------------------------------
+
+Для нахождения функции распределения (CDF) из функции плотности вероятности (PDF) равномерного распределения, давайте рассмотрим стандартное равномерное распределение на отрезке \([a, b]\).
+
+PDF равномерного распределения на отрезке \([a, b]\) определяется как:
+
+\[ f(x) = \begin{cases}
+\frac{1}{b-a} & \text{если } a \leq x \leq b \\
+0 & \text{иначе}
+\end{cases} \]
+
+CDF \(F(x)\) определяется как интеграл PDF от \(-\infty\) до \(x\):
+
+\[ F(x) = \int_{-\infty}^{x} f(t) \, dt \]
+
+Рассмотрим три случая для \(x\):
+
+1. **Если \(x < a\)**:
+   \[ F(x) = \int_{-\infty}^{x} f(t) \, dt = \int_{-\infty}^{x} 0 \, dt = 0 \]
+
+2. **Если \(a \leq x \leq b\)**:
+   \[ F(x) = \int_{-\infty}^{x} f(t) \, dt = \int_{-\infty}^{a} 0 \, dt + \int_{a}^{x} \frac{1}{b-a} \, dt \]
+   \[ F(x) = 0 + \frac{1}{b-a} \int_{a}^{x} \, dt = \frac{1}{b-a} [t]_{a}^{x} = \frac{1}{b-a} (x - a) = \frac{x - a}{b - a} \]
+
+3. **Если \(x > b\)**:
+   \[ F(x) = \int_{-\infty}^{x} f(t) \, dt = \int_{-\infty}^{a} 0 \, dt + \int_{a}^{b} \frac{1}{b-a} \, dt + \int_{b}^{x} 0 \, dt \]
+   \[ F(x) = 0 + \frac{1}{b-a} \int_{a}^{b} \, dt + 0 = \frac{1}{b-a} [t]_{a}^{b} = \frac{1}{b-a} (b - a) = 1 \]
+
+Таким образом, CDF равномерного распределения на отрезке \([a, b]\) будет:
+
+\[ F(x) = \begin{cases}
+0 & \text{если } x < a \\
+\frac{x - a}{b - a} & \text{если } a \leq x \leq b \\
+1 & \text{если } x > b
+\end{cases} \]
+
+Это и есть функция распределения (CDF) для равномерного распределения на отрезке \([a, b]\).
+
+\end{document}
