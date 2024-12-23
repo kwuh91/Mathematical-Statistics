@@ -103,6 +103,8 @@
     \item Дайте анализ полученного решения.
 \end{enumerate}
 
+\vspace{30pt}
+
 \section*{Исходные данные}\vspace{-20pt}\rule{\linewidth}{0.1mm}
 
 \begin{equation*}
@@ -125,6 +127,10 @@
         3.377 & 16.195 & 12.04 & 12.768 & 2.744 & 14.186 & 9.354 & 15.439 & 14.612 & 15.649 \\
     \end{vmatrix}
 \end{equation*}
+
+\newpage
+
+\section*{Ход выполнения работы}\vspace{-20pt}\rule{\linewidth}{0.1mm}
 
 Сгруппируем данные:
 
@@ -165,31 +171,8 @@ def group(data):
 
     rel_freqs_density_ = rel_freqs_ / h_
 
-    return n_, \
-           min_, \
-           max_, \
-           range_, \
-           l_, \
-           h_, \
-           int_boundaries_, \
-           intervals_, \
-           mid_ranges_, \
-           freqs_, \
-           rel_freqs_, \
-           rel_freqs_density_
-
-n_, \
-min_, \
-max_, \
-range_, \
-l_, \
-h_, \
-int_boundaries_, \
-intervals_, \
-mid_ranges_, \
-freqs_, \
-rel_freqs_, \
-rel_freqs_density_ = group(data_)
+    return n_, min_, max_, range_, l_, h_, int_boundaries_, \ 
+           intervals_, mid_ranges_, freqs_, rel_freqs_, rel_freqs_density_
   \end{lstlisting}
 \end{center}
 

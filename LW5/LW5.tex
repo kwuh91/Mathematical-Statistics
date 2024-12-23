@@ -379,7 +379,8 @@ S2 = 1/(n_ - 1) * sum((data_ - overlineX)**2)
     \alpha = P\left(\overline{X} > C_2 | a = 3\right) = 
     P\left(\cfrac{\overline{X} - a_0}{S} \sqrt{n} > 
     \cfrac{C_2 - a_0}{S} \sqrt{n}\right)
-    = F_{t(n-1)} \left(\cfrac{C_2 - a_0}{S} \sqrt{n}\right) \\
+    = 1 - F_{t(n-1)} \left(\cfrac{C_2 - a_0}{S} \sqrt{n}\right) \\
+    \Rightarrow F_{t(n-1)} \left( \cfrac{C_2 - a_0}{S} \sqrt{n} \right) = 1 - \alpha \\
     \Rightarrow \cfrac{C_2 - a_0}{S} \sqrt{n} = t_{1 - \alpha} (n-1) \\
     \Rightarrow C_2 = \cfrac{S \cdot t_{1-\alpha}(n-1)}{\sqrt{n}} + a_0 \approx 3.29259 
 \end{gather*}
@@ -423,7 +424,8 @@ C2 = np.sqrt(S2)*quantile/np.sqrt(n_) + a0
 \begin{gather*}
     \alpha = P\left(S^2 > C_3 | \sigma = 2.1\right) = 
     P\left( \cfrac{S^2(n-1)}{\sigma_0^2} > \cfrac{C_3 (n-1)}{\sigma_0^2} \right)
-    = \chi^2(n-1) \left(\cfrac{C_3 (n-1)}{\sigma_0^2}\right) \\
+    = 1 - \chi^2_{n-1} \left(\cfrac{C_3 (n-1)}{\sigma_0^2}\right) \\
+    \Rightarrow \chi^2_{n-1} \left( \cfrac{C_3 (n-1)}{\sigma_0^2} \right) = 1 - \alpha \\
     \Rightarrow \cfrac{C_3 (n-1)}{\sigma_0^2} = \chi^2_{1 - \alpha}(n-1) \\
     \Rightarrow C_3 = \cfrac{\chi^2_{1 - \alpha} (n-1)}{n-1} \cdot \sigma_0^2 \approx 5.22994
 \end{gather*}
@@ -453,7 +455,7 @@ C3 = quantile * sigma0**2 / (n_ - 1)
 Критическое множество для среднего квадратического отклонения при альтернативе $H_1: a = 3.5$ 
 имеет вид:
 \begin{equation*}
-    S_1 = \left\{ \overline{X} < C_1 \right\}
+    S_1 = \left\{ \overline{X} > C_1 \right\}
 \end{equation*}
 
 Рассмотрим статистику:
@@ -463,24 +465,25 @@ C3 = quantile * sigma0**2 / (n_ - 1)
 
 Тогда по определению ошибки первого рода $\alpha = P(S_1|H_0)$:
 \begin{gather*}
-    \alpha = P\left(\overline{X} < C_1 | a = 3\right) = 
-    P\left( \cfrac{\overline{X} - a_0}{\sigma_1} \sqrt{n} < 
+    \alpha = P\left(\overline{X} > C_1 | a = 3\right) = 
+    P\left( \cfrac{\overline{X} - a_0}{\sigma_1} \sqrt{n} > 
     \cfrac{C_1 - a_0}{\sigma_1} \sqrt{n} \right)
-    = \Phi\left(\cfrac{C_1 - a_0}{\sigma_1} \sqrt{n}\right) \\
-    \Rightarrow \cfrac{C_1 - a_0}{\sigma_1} \sqrt{n} = u_\alpha \\
-    \Rightarrow C_1 = \cfrac{u_\alpha \cdot \sigma_1}{\sqrt{n}} + a_0 \approx 2.7180587 
+    = 1 - \Phi\left(\cfrac{C_1 - a_0}{\sigma_1} \sqrt{n}\right) \\
+    \Rightarrow \Phi\left( \cfrac{C_1 - a_0}{\sigma_1} \sqrt{n} \right) = 1 - \alpha \\
+    \Rightarrow \cfrac{C_1 - a_0}{\sigma_1} \sqrt{n} = u_{1 - \alpha} \\
+    \Rightarrow C_1 = \cfrac{u_{1 - \alpha} \cdot \sigma_1}{\sqrt{n}} + a_0 \approx 3.2819 
 \end{gather*}
 
 \begin{center}
     \begin{lstlisting}[language=Python]
-quantile = sp.stats.norm.ppf(alpha, 0, 1)
+quantile = sp.stats.norm.ppf(1-alpha, 0, 1)
 
 C1 = quantile * sigma1 / np.sqrt(n_) + a0
     \end{lstlisting}
 \end{center}
 
 Следовательно, гипотеза $H_{0}: a = 3$ принимается, потому что $\overline{X} = 3.17705$ не 
-принадлежит критическому множеству $S_1 = \left\{ \overline{X} < 2.7180587 \right\}$
+принадлежит критическому множеству $S_1 = \left\{ \overline{X} > 3.2819 \right\}$
 
 \rule{\linewidth}{0.1mm}
 
@@ -489,23 +492,23 @@ C1 = quantile * sigma1 / np.sqrt(n_) + a0
 \rule{\linewidth}{0.1mm}
 
 \begin{gather*}
-    S_1 = \left\{ \overline{X} < C_1 \right\} = \left\{ \overline{X} < 2.7180587 \right\} \\
+    S_1 = \left\{ \overline{X} > C_1 \right\} = \left\{ \overline{X} > 3.2819 \right\} \\
     \cfrac{\overline{X} - a}{\sigma} \sqrt{n} \sim N(0, 1)
 \end{gather*}
 
 Согласно определению ошибки второго рода $\beta = P(\overline{S_1}|H_1)$:
 
 \begin{equation*}
-    \beta = P(\overline{X} > C_1 | a = 3.5) = P(\cfrac{\overline{X} - a_0}{\sigma_1}\sqrt{n} > 
-    \cfrac{C_1 - a_1}{\sigma_1}\sqrt{n}) = 1 - \Phi(\cfrac{C_1 - a_1}{\sigma_1}\sqrt{n}) 
-    \approx 0.99981
+    \beta = P\left(\overline{X} < C_1 | a = 3.5\right) = P\left(\cfrac{\overline{X} - a_0}{\sigma_1}\sqrt{n} < 
+    \cfrac{C_1 - a_1}{\sigma_1}\sqrt{n}\right) = \Phi\left(\cfrac{C_1 - a_1}{\sigma_1}\sqrt{n}\right) 
+    \approx 0.1608
 \end{equation*}
 
 \begin{center}
     \begin{lstlisting}[language=Python]
 val = (C1 - a1)/sigma1 * np.sqrt(n_)
 
-beta = 1 - sp.stats.norm.cdf(val, 0, 1)
+beta = sp.stats.norm.cdf(val, 0, 1)
     \end{lstlisting}
 \end{center}
 
@@ -521,17 +524,16 @@ beta = 1 - sp.stats.norm.cdf(val, 0, 1)
 \rule{\linewidth}{0.1mm}
 
 \begin{gather*}
-    1 - \Phi\left(\cfrac{C_1 - a_1}{\sigma_1} \sqrt{n}\right) <= 0.1 \\
-    \Rightarrow \Phi \left( \cfrac{C_1 - a_1}{\sigma_1} \sqrt{n} \right) \leq 0.9 \\
-    \cfrac{C_1 - a_1}{\sigma_1} \sqrt{n} = u_{1 - \varepsilon} \\
-    \Rightarrow a_1 = \cfrac{-u_{0.9} \cdot \sigma_1}{\sqrt{n}} + C_1 \approx 2.436117
+    \Phi\left(\cfrac{C_1 - a_1'}{\sigma_1} \sqrt{n}\right) \leq 0.1 \\
+    \Rightarrow \cfrac{C_1 - a_1'}{\sigma_1} \sqrt{n} = u_{\varepsilon} \\
+    \Rightarrow a_1' = C_1 - \cfrac{u_{0.1} \cdot \sigma_1}{\sqrt{n}} \approx 3.5639
 \end{gather*}
 
 \begin{center}
     \begin{lstlisting}[language=Python]
-quantile = sp.stats.norm.ppf(1 - epsilon, 0, 1)
+quantile = sp.stats.norm.ppf(epsilon, 0, 1)
 
-a1_ = -quantile * sigma1 / np.sqrt(n_) + C1
+a1_ = C1 - quantile * sigma1 / np.sqrt(n_)
     \end{lstlisting}
 \end{center}
 
@@ -778,19 +780,19 @@ quantile = sp.stats.chi2.ppf(1-alpha, n_-1)
 C3 = quantile * sigma0**2 / (n_ - 1)
 print(f'C3 = {C3}, S2 > C3 = {S2 > C3} => {check(S2 > C3)}')
 
-quantile = sp.stats.norm.ppf(alpha, 0, 1)
+quantile = sp.stats.norm.ppf(1-alpha, 0, 1)
 
 C1 = quantile * sigma1 / np.sqrt(n_) + a0
-print(f'C1 = {C1}, overlineX < C1 = {overlineX < C1} => {check(overlineX < C1)}')
+print(f'C1 = {C1}, overlineX > C1 = {overlineX > C1} => {check(overlineX > C1)}')
 
 val = (C1 - a1)/sigma1 * np.sqrt(n_)
 
-beta = 1 - sp.stats.norm.cdf(val, 0, 1)
+beta = sp.stats.norm.cdf(val, 0, 1)
 print(f'beta = {beta}')
 
-quantile = sp.stats.norm.ppf(1 - epsilon, 0, 1)
+quantile = sp.stats.norm.ppf(epsilon, 0, 1)
 
-a1_ = -quantile * sigma1 / np.sqrt(n_) + C1
+a1_ = C1 - quantile * sigma1 / np.sqrt(n_)
 print(f'a1\' = {a1_}')
 
 def buildBar(filename):
